@@ -1,16 +1,11 @@
 import NoInterConnection from './components/NoInternetConnection'
-
+import Login from './routes/login';
 function App() {
 
   return (
 		<>
 			<NoInterConnection>
-				<p className='text-center mt-40'>Login sa mga batak</p>
-				<input
-					type="file"
-					name=""
-					id=""
-				/>
+        <Login/>
 			</NoInterConnection>
 		</>
 	);
