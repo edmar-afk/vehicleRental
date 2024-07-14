@@ -1,5 +1,4 @@
-/* eslint-disable react/prop-types */ import { faMailBulk, faPhone } from "@fortawesome/free-solid-svg-icons";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+/* eslint-disable react/prop-types */ import { faMailBulk, faPhone } from "@fortawesome/free-solid-svg-icons";import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { motion } from "framer-motion";
 
 function ProfileDetails(props) {
@@ -10,7 +9,7 @@ function ProfileDetails(props) {
 			<div className="w-full p-4 text-center bg-white border border-gray-200 rounded-lg shadow-2xl sm:p-8 mt-14">
 				<h5 className="mb-2 text-xl font-bold text-gray-900">Personal Details</h5>
 				<p className="mb-5 text-base text-gray-500 sm:text-lg">
-					Stay up to date and move work forward with Flowbite on iOS & Android. Download the app today.
+					Be vigilant and protect yourself from scams. Never share your personal information.
 				</p>
 				<div className="items-center justify-center flex flex-row">
 					<div className="w-full mx-1 bg-blue-800 hover:bg-blue-700 focus:ring-4 focus:outline-none focus:ring-blue-300 text-white rounded-lg inline-flex items-center justify-center px-4 py-2.5">
