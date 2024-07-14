@@ -1,12 +1,90 @@
-/* eslint-disable react/no-unescaped-entities */ import logo from "../assets/img/logo.png";import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faCoffee } from "@fortawesome/free-solid-svg-icons";
+/* eslint-disable no-unused-vars */ /* eslint-disable react/no-unescaped-entities */ import logo from "../assets/img/logo.png";import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faArrowCircleRight, faKey } from "@fortawesome/free-solid-svg-icons";
+import { Link, useNavigate } from "react-router-dom";
+import { useState } from "react";
+import api from "../assets/api";
+import Swal from "sweetalert2";
+import { ACCESS_TOKEN, REFRESH_TOKEN } from "../assets/contstants";
+
 const Login = () => {
+	const [username, setUsername] = useState("");
+	const [password, setPassword] = useState("");
+	const [loading, setLoading] = useState(false);
+	const navigate = useNavigate();
+
+	const handleSubmit = async (e) => {
+		e.preventDefault();
+		setLoading(true);
+
+		const swalInstance = Swal.fire({
+			title: "Logging In...",
+			text: "Checking for right credentials.",
+			icon: "info",
+			showConfirmButton: false,
+			allowOutsideClick: false,
+			allowEscapeKey: false,
+			didOpen: () => {
+				Swal.showLoading();
+			},
+		});
+
+		try {
+			const res = await api.post("/api/token/", {
+				username: username,
+				password: password,
+			});
+
+			if (res.status === 200) {
+				localStorage.setItem(ACCESS_TOKEN, res.data.access);
+				localStorage.setItem(REFRESH_TOKEN, res.data.refresh);
+
+				// Fetch user details to get all user data
+				const userRes = await api.get("/api/user/", {
+					headers: {
+						Authorization: `Bearer ${res.data.access}`,
+					},
+				});
+
+				const userData = userRes.data;
+				localStorage.setItem("userData", JSON.stringify(userData)); // Store all user data
+
+				swalInstance.close();
+				Swal.fire({
+					title: "Success!",
+					text: "You have logged in successfully.",
+					icon: "success",
+					confirmButtonText: "OK",
+				}).then(() => {
+					navigate("/home");
+				});
+			} else {
+				swalInstance.close();
+				Swal.fire({
+					title: "Error!",
+					text: "Login failed.",
+					icon: "error",
+					confirmButtonText: "OK",
+				});
+			}
+		} catch (error) {
+			swalInstance.close();
+			Swal.fire({
+				title: "Error!",
+				text: error.response?.data?.detail || "Login failed",
+				icon: "error",
+				confirmButtonText: "OK",
+			});
+		} finally {
+			setLoading(false);
+		}
+	};
+
 	return (
 		<>
 			<div className="font-[sans-serif]">
 				<div className="grid lg:grid-cols-2 gap-4 max-lg:gap-12 bg-gradient-to-r from-blue-500 to-blue-700 px-8 py-12 h-[320px]">
 					<div>
-						<a href="javascript:void(0)">
+						<a href="#">
 							<img
 								src={logo}
 								alt="logo"
@@ -19,7 +97,7 @@ const Login = () => {
 					</div>
 
 					<div className="bg-white rounded-xl sm:px-6 px-4 py-8 max-w-md w-full h-max shadow-[0_2px_10px_-3px_rgba(6,81,237,0.3)] max-lg:mx-auto">
-						<form>
+						<form onSubmit={handleSubmit}>
 							<div className="mb-8">
 								<h3 className="text-3xl font-extrabold text-gray-800">Sign in</h3>
 							</div>
@@ -30,6 +108,8 @@ const Login = () => {
 									<input
 										name="username"
 										type="text"
+										value={username}
+										onChange={(e) => setUsername(e.target.value)}
 										required
 										className="w-full text-sm text-gray-800 border border-gray-300 px-4 py-3 rounded-md outline-blue-600"
 										placeholder="Enter user name"
@@ -57,20 +137,16 @@ const Login = () => {
 									<input
 										name="password"
 										type="password"
+										value={password}
+										onChange={(e) => setPassword(e.target.value)}
 										required
 										className="w-full text-sm text-gray-800 border border-gray-300 px-4 py-3 rounded-md outline-blue-600"
 										placeholder="Enter password"
 									/>
-									<svg
-										xmlns="http://www.w3.org/2000/svg"
-										fill="#bbb"
-										stroke="#bbb"
-										className="w-[18px] h-[18px] absolute right-4 cursor-pointer"
-										viewBox="0 0 128 128">
-										<path
-											d="M64 104C22.127 104 1.367 67.496.504 65.943a4 4 0 0 1 0-3.887C1.367 60.504 22.127 24 64 24s62.633 36.504 63.496 38.057a4 4 0 0 1 0 3.887C126.633 67.496 105.873 104 64 104zM8.707 63.994C13.465 71.205 32.146 96 64 96c31.955 0 50.553-24.775 55.293-31.994C114.535 56.795 95.854 32 64 32 32.045 32 13.447 56.775 8.707 63.994zM64 88c-13.234 0-24-10.766-24-24s10.766-24 24-24 24 10.766 24 24-10.766 24-24 24zm0-40c-8.822 0-16 7.178-16 16s7.178 16 16 16 16-7.178 16-16-7.178-16-16-16z"
-											data-original="#000000"></path>
-									</svg>
+									<FontAwesomeIcon
+										icon={faKey}
+										className="text-gray-400 absolute right-4"
+									/>
 								</div>
 							</div>
 							<div className="mt-4 text-right">
@@ -83,18 +159,18 @@ const Login = () => {
 
 							<div className="mt-8">
 								<button
-									type="button"
+									type="submit"
 									className="w-full shadow-xl py-3 px-6 text-sm font-semibold rounded-md text-white bg-blue-600 hover:bg-blue-700 focus:outline-none">
-									Log in
+									<FontAwesomeIcon icon={faArrowCircleRight} /> Log in
 								</button>
 							</div>
 							<p className="text-sm mt-8 text-center text-gray-800">
 								Don't have an account{" "}
-								<a
-									href="#"
+								<Link
+									to={"/register"}
 									className="text-blue-600 font-semibold hover:underline ml-1 whitespace-nowrap">
 									Register here
-								</a>
+								</Link>
 							</p>
 						</form>
 					</div>
