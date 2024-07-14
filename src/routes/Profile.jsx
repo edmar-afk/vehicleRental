@@ -1,6 +1,4 @@
-import { Link, useNavigate } from "react-router-dom";
-import userIcon from "../assets/img/user-icon.png";
-import BackgroundProfile from "../components/profile/BackgroundProfile";
+import { Link, useNavigate } from "react-router-dom";import userIcon from "../assets/img/user-icon.png";import BackgroundProfile from "../components/profile/BackgroundProfile";
 import ProfileDetails from "../components/profile/ProfileDetails";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faCamera, faPersonWalkingDashedLineArrowRight } from "@fortawesome/free-solid-svg-icons";
@@ -19,12 +17,10 @@ function Profile() {
 	const navigate = useNavigate();
 
 	useEffect(() => {
-		console.log(userId);
 		const fetchProfilePicture = async () => {
 			try {
 				const response = await api.get(`/api/profile/${userId}/`);
 				setProfile(response.data);
-				console.log(response);
 				if (response.data.profile_pic) {
 					setImageUrl(response.data.profile_pic);
 				} else {
@@ -39,6 +35,10 @@ function Profile() {
 
 		if (userId) {
 			fetchProfilePicture();
+			const intervalId = setInterval(fetchProfilePicture, 5000); // Fetch profile picture every 5 seconds
+
+			// Clear interval on component unmount
+			return () => clearInterval(intervalId);
 		}
 	}, [userId]); // Depend on userId to avoid infinite loops
 
@@ -138,6 +138,7 @@ function Profile() {
 								className="hidden"
 								accept="image/*"
 								onChange={handleFileChange}
+								capture="environment"
 							/>
 
 							{/* Camera Icon Button */}
