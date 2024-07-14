@@ -1,4 +1,7 @@
-import { Link } from "react-router-dom";import userIcon from "../assets/img/user-icon.png";import BackgroundProfile from "../components/profile/BackgroundProfile";import ProfileDetails from "../components/profile/ProfileDetails";
+import { Link, useNavigate } from "react-router-dom";
+import userIcon from "../assets/img/user-icon.png";
+import BackgroundProfile from "../components/profile/BackgroundProfile";
+import ProfileDetails from "../components/profile/ProfileDetails";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faCamera, faPersonWalkingDashedLineArrowRight } from "@fortawesome/free-solid-svg-icons";
 import { useRef, useState, useEffect } from "react";
@@ -13,6 +16,7 @@ function Profile() {
 	const [imageUrl, setImageUrl] = useState(userIcon);
 	const [profile, setProfile] = useState({});
 	const [loading, setLoading] = useState(true);
+	const navigate = useNavigate();
 
 	useEffect(() => {
 		console.log(userId);
@@ -49,6 +53,15 @@ function Profile() {
 		const formData = new FormData();
 		formData.append("profile_pic", file);
 
+		Swal.fire({
+			title: "Uploading...",
+			text: "Please wait while your profile picture is being uploaded.",
+			allowOutsideClick: false,
+			didOpen: () => {
+				Swal.showLoading();
+			},
+		});
+
 		try {
 			const res = await api.post("/api/upload_picture/", formData, {
 				headers: {
@@ -57,6 +70,8 @@ function Profile() {
 				},
 			});
 
+			Swal.close();
+
 			if (res.status === 200) {
 				Swal.fire({
 					title: "Success!",
@@ -64,7 +79,7 @@ function Profile() {
 					icon: "success",
 					confirmButtonText: "OK",
 				}).then(() => {
-					window.location.reload(); // Reload the page to show the updated profile picture
+					navigate("/profile", { replace: true }); // Navigate to the profile route
 				});
 			} else {
 				Swal.fire({
@@ -75,6 +90,7 @@ function Profile() {
 				});
 			}
 		} catch (error) {
+			Swal.close();
 			Swal.fire({
 				title: "Error!",
 				text: error.response?.data?.detail || "Failed to update profile picture.",

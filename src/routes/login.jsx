@@ -1,4 +1,6 @@
-/* eslint-disable no-unused-vars */ /* eslint-disable react/no-unescaped-entities */ import logo from "../assets/img/logo.png";import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+/* eslint-disable no-unused-vars */ /* eslint-disable react/no-unescaped-entities */
+import logo from "../assets/img/logo.png";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faArrowCircleRight, faKey } from "@fortawesome/free-solid-svg-icons";
 import { Link, useNavigate } from "react-router-dom";
 import { useState } from "react";
