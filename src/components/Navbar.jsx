@@ -1,8 +1,9 @@
-import { faHouse, faMessage, faNoteSticky, faUserCircle } from "@fortawesome/free-solid-svg-icons";import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";import { NavLink } from "react-router-dom";
+import { faHeart, faHouse, faMessage, faUserCircle } from "@fortawesome/free-solid-svg-icons";import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { NavLink } from "react-router-dom";
 function Navbar() {
 	return (
-		<div>
-			<div className="fixed z-50 w-full h-16 max-w-lg -translate-x-1/2 bg-white border border-gray-200 rounded-full bottom-4 left-1/2 shadow-2xl">
+		<div className="relative z-50">
+			<div className="fixed w-full z-50 h-16 max-w-lg -translate-x-1/2 bg-white border border-gray-200 rounded-full bottom-4 left-1/2 shadow-2xl">
 				<div className="grid h-full max-w-lg grid-cols-5 mx-auto overflow-hidden">
 					<NavLink
 						to="/home"
@@ -75,10 +76,10 @@ function Navbar() {
 						{({ isActive }) => (
 							<>
 								<FontAwesomeIcon
-									icon={faNoteSticky}
+									icon={faHeart}
 									className={`text-xl ${isActive ? "text-blue-400" : "text-gray-700"}`}
 								/>
-								<span className={`text-[7px] ${isActive ? "text-blue-400" : "text-gray-700"}`}>Rental</span>
+								<span className={`text-[7px] ${isActive ? "text-blue-400" : "text-gray-700"}`}>Favorites</span>
 							</>
 						)}
 					</NavLink>
@@ -102,6 +103,8 @@ function Navbar() {
 					</NavLink>
 				</div>
 			</div>
+
+			<div className="fixed bottom-0 w-full bg-white h-14"></div>
 		</div>
 	);
 }

@@ -12,7 +12,7 @@ function ProfileDetails(props) {
 					Be vigilant and protect yourself from scams. Never share your personal information.
 				</p>
 				<div className="items-center justify-center flex flex-row">
-					<div className="w-full mx-1 bg-blue-800 hover:bg-blue-700 focus:ring-4 focus:outline-none focus:ring-blue-300 text-white rounded-lg inline-flex items-center justify-center px-4 py-2.5">
+					<div className="w-full mx-1 focus:ring-4 focus:outline-none focus:ring-blue-300 text-gray-700 rounded-lg inline-flex items-center justify-center px-4 py-2.5">
 						<FontAwesomeIcon
 							icon={faPhone}
 							className="mr-1"
@@ -21,11 +21,12 @@ function ProfileDetails(props) {
 							{loading ? (
 								<div className="h-2 bg-blue-200 rounded-full animate-pulse w-[100px]"></div>
 							) : (
-								<p className="font-sans text-[9px] font-semibold">{mobile_number}</p>
+								<p className="font-sans text-[10px] font-semibold">{mobile_number}</p>
 							)}
 						</div>
 					</div>
-					<div className="w-full mx-1 bg-blue-800 hover:bg-blue-700 focus:ring-4 focus:outline-none focus:ring-blue-300 text-white rounded-lg inline-flex items-center justify-center px-4 py-2.5">
+					<div>|</div>
+					<div className="w-full mx-1 focus:ring-4 focus:outline-none focus:ring-blue-300 text-gray-700 rounded-lg inline-flex items-center justify-center px-4 py-2.5">
 						<FontAwesomeIcon
 							icon={faMailBulk}
 							className="mr-1"
@@ -34,7 +35,7 @@ function ProfileDetails(props) {
 							{loading ? (
 								<div className="h-2 bg-blue-200 rounded-full animate-pulse w-[100px]"></div>
 							) : (
-								<p className="font-sans text-[9px] font-semibold">{email}</p>
+								<p className="font-sans text-[10px] font-semibold">{email}</p>
 							)}
 						</div>
 					</div>
