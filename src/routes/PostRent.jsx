@@ -1,10 +1,11 @@
+import Info from "../components/postRent/Info";
 
 function PostRent() {
-  return (
-    <div>
-      postrent
-    </div>
-  )
+	return (
+		<>
+			<Info/>
+		</>
+	);
 }
 
-export default PostRent
+export default PostRent;
