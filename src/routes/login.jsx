@@ -94,7 +94,7 @@ const Login = () => {
 							/>
 						</a>
 						<div className="max-w-lg mt-12 max-lg:hidden">
-							<p className="text-sm mt-4 text-white">Welcome to Car Rentals! Please sign in to access our services</p>
+							<p className="text-sm mt-4 text-white">Welcome to Vehicle Rentals! Please sign in to access our services</p>
 						</div>
 					</div>
 

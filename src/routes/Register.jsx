@@ -1,4 +1,5 @@
-/* eslint-disable no-unused-vars */import { useState } from "react";import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";import { faLock, faMailBulk } from "@fortawesome/free-solid-svg-icons";
+/* eslint-disable no-unused-vars */ import { useState } from "react";import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faLock, faMailBulk } from "@fortawesome/free-solid-svg-icons";
 import { Link, useNavigate } from "react-router-dom";
 import api from "../assets/api"; // Ensure axios is correctly configured in this file
 import logo from "../assets/img/logo.png";
@@ -14,6 +15,12 @@ function Register() {
 	const [password2, setPassword2] = useState("");
 	const [loading, setLoading] = useState(false);
 	const navigate = useNavigate();
+
+	const handleUsernameChange = (e) => {
+		const value = e.target.value.toLowerCase(); // Convert to lowercase
+		const filteredValue = value.replace(/[^a-z0-9]/g, ""); // Remove all characters that are not lowercase letters or numbers
+		setUsername(filteredValue);
+	};
 
 	const handleSubmit = async (e) => {
 		e.preventDefault();
@@ -64,14 +71,26 @@ function Register() {
 			}
 		} catch (error) {
 			swalInstance.close();
+			let errorMessage = "Registration failed";
+
+			if (error.response) {
+				// If the error response contains specific error messages, display them
+				if (error.response.data && typeof error.response.data === "object") {
+					errorMessage = Object.values(error.response.data).join(" ");
+				} else if (error.response.data && error.response.data.detail) {
+					errorMessage = error.response.data.detail;
+				}
+			}
+
 			Swal.fire({
 				title: "Error!",
-				text: error.response?.data?.detail || "Registration failed",
+				text: errorMessage,
 				icon: "error",
 				confirmButtonText: "OK",
 			});
 		}
 	};
+
 
 	return (
 		<>
@@ -156,7 +175,7 @@ function Register() {
 									<input
 										type="text"
 										value={username}
-										onChange={(e) => setUsername(e.target.value)}
+										onChange={handleUsernameChange}
 										required
 										className="w-full text-sm text-gray-800 border border-gray-300 px-4 py-3 rounded-md outline-blue-600"
 										placeholder="Username"
