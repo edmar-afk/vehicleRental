@@ -13,7 +13,7 @@ function postRental() {
 						className="object-cover object-center w-8 h-8 rounded-ful"
 					/>
 					<div className="-space-y-1">
-						<h2 className="text-sm font-semibold leading-none">Edmar Jay Heolin</h2>
+						<h2 className="text-sm font-semibold leading-none">Rimark Tumala</h2>
 						<span className="inline-block text-xs leading-none text-gray-600">Posted a rent 1m ago</span>
 					</div>
 				</div>
