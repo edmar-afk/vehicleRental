@@ -1,4 +1,7 @@
-/* eslint-disable no-unused-vars */import { useState, useEffect } from "react";import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";import { faLock, faMailBulk } from "@fortawesome/free-solid-svg-icons";
+/* eslint-disable react-hooks/exhaustive-deps */
+/* eslint-disable no-unused-vars */ import { useState, useEffect } from "react";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faLock, faMailBulk } from "@fortawesome/free-solid-svg-icons";
 import { Link, useNavigate } from "react-router-dom";
 import api from "../assets/api"; // Ensure axios is correctly configured in this file
 import logo from "../assets/img/logo.png";
@@ -303,7 +306,7 @@ function Register() {
 									Register
 								</button>
 								<p>
-									Already have an account? 
+									Already have an account?
 									<Link
 										to="/"
 										className="text-blue-500 hover:underline ml-2">
