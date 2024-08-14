@@ -1,5 +1,4 @@
-/* eslint-disable react-hooks/exhaustive-deps */
-/* eslint-disable no-unused-vars */ import { useState, useEffect } from "react";
+/* eslint-disable react-hooks/exhaustive-deps *//* eslint-disable no-unused-vars */ import { useState, useEffect } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faLock, faMailBulk } from "@fortawesome/free-solid-svg-icons";
 import { Link, useNavigate } from "react-router-dom";
@@ -60,33 +59,23 @@ function Register() {
 	const handleSubmit = async (e) => {
 		e.preventDefault();
 
-		// Show SweetAlert2 loading spinner
-		const swalInstance = Swal.fire({
-			title: "Registering...",
-			text: "Please wait while we process your registration.",
-			icon: "info",
-			showConfirmButton: false,
-			allowOutsideClick: false,
-			allowEscapeKey: false,
-			didOpen: () => {
-				Swal.showLoading();
-			},
-		});
+		const formData = new FormData();
+		formData.append("first_name", firstName);
+		formData.append("last_name", lastName);
+		formData.append("username", username);
+		formData.append("email", email);
+		formData.append("password", password);
+		formData.append("password2", password2);
+		formData.append("mobile_num", mobileNum);
+
+		// If no file is being uploaded, do not append profile_pic
 
 		try {
-			const res = await api.post("/api/register/", {
-				first_name: firstName,
-				last_name: lastName,
-				username: username,
-				mobile_num: mobileNum,
-				email: email,
-				password: password,
-				password2: password2,
+			const res = await api.post("/api/register/", formData, {
+				headers: { "Content-Type": "multipart/form-data" },
 			});
 
 			if (res.status === 201) {
-				// Close the SweetAlert2 loading spinner
-				swalInstance.close();
 				Swal.fire({
 					title: "Success!",
 					text: "You have been registered successfully.",
@@ -96,7 +85,6 @@ function Register() {
 					navigate("/");
 				});
 			} else {
-				swalInstance.close();
 				Swal.fire({
 					title: "Error!",
 					text: "Registration failed.",
@@ -105,11 +93,9 @@ function Register() {
 				});
 			}
 		} catch (error) {
-			swalInstance.close();
 			let errorMessage = "Registration failed";
 
 			if (error.response) {
-				// If the error response contains specific error messages, display them
 				if (error.response.data && typeof error.response.data === "object") {
 					errorMessage = Object.values(error.response.data).join(" ");
 				} else if (error.response.data && error.response.data.detail) {

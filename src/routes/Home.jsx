@@ -1,4 +1,5 @@
-import FilterSearch from "../components/homepage/FilterSearch";import PostRental from "../components/homepage/PostRental";
+import FilterSearch from "../components/homepage/FilterSearch";
+import PostRental from "../components/homepage/PostRental";
 
 function Home() {
 	// Get all user data from local storage

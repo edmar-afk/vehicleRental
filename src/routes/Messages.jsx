@@ -1,9 +1,10 @@
-import Info from "../components/messages/Info";
+import Chat from "../components/messages/Chat";
 
 function Messages() {
 	return (
 		<>
-			<Info />
+		
+			<Chat/>
 		</>
 	);
 }

@@ -1,5 +1,5 @@
-/* eslint-disable react/prop-types */ import { faMailBulk, faPhone } from "@fortawesome/free-solid-svg-icons";import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-
+/* eslint-disable react/prop-types */ import { faMailBulk, faPhone } from "@fortawesome/free-solid-svg-icons";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
 function ProfileDetails(props) {
 	const { email, mobile_number, loading } = props;

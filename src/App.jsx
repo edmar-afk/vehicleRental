@@ -12,7 +12,6 @@ import Messages from './routes/Messages'
 import PostRent from './routes/PostRent'
 import Rental from './routes/Rental'
 
-
 function Logout() {
 	localStorage.clear();
 	return <Navigate to="/" />;
@@ -33,6 +32,7 @@ function App() {
 							path="/home"
 							element={
 								<ProtectedRoute>
+									
 									<Home />
 									<Navbar />
 								</ProtectedRoute>
@@ -41,37 +41,37 @@ function App() {
 						<Route
 							path="/profile"
 							element={
-								<ProtectedRoute>
+								<>
 									<Profile />
 									<Navbar />
-								</ProtectedRoute>
+								</>
 							}
 						/>
 						<Route
 							path="/rental"
 							element={
-								<ProtectedRoute>
+								<>
 									<Rental />
 									<Navbar />
-								</ProtectedRoute>
+								</>
 							}
 						/>
 						<Route
 							path="/messages"
 							element={
-								<ProtectedRoute>
+								<>
 									<Messages />
 									<Navbar />
-								</ProtectedRoute>
+								</>
 							}
 						/>
 						<Route
 							path="/postRent"
 							element={
-								<ProtectedRoute>
+								<>
 									<PostRent />
 									<Navbar />
-								</ProtectedRoute>
+								</>
 							}
 						/>
 						<Route
