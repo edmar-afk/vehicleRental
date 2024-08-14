@@ -1,10 +1,9 @@
 import Greetings from "./Greetings";
-
 function Chat() {
 	return (
 		<>
-            <section className="flex flex-col justify-center antialiased bg-white h-screen pt-4">
-                <Greetings/>
+			<section className="flex flex-col justify-center antialiased bg-white h-screen pt-2">
+				<Greetings />
 				<div className="h-full">
 					<div className="relative w-full mx-auto">
 						<div className="py-3 px-5">
@@ -92,7 +91,6 @@ function Chat() {
 								</button>
 							</div>
 						</div>
-
 					</div>
 				</div>
 			</section>
