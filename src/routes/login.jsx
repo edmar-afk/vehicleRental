@@ -1,6 +1,4 @@
-/* eslint-disable react/no-unescaped-entities */ import { useState } from "react";
-import Button from "@mui/material/Button";
-import TextField from "@mui/material/TextField";
+/* eslint-disable react/no-unescaped-entities */ import { useState } from "react";import Button from "@mui/material/Button";import TextField from "@mui/material/TextField";
 import { Link, useNavigate } from "react-router-dom";
 import Paper from "@mui/material/Paper";
 import Grid from "@mui/material/Grid";
@@ -9,12 +7,25 @@ import { motion } from "framer-motion";
 import ArrowBackIosOutlinedIcon from "@mui/icons-material/ArrowBackIosOutlined";
 import Swal from "sweetalert2";
 import api from "../assets/api"; // Make sure to setup your Axios instance
+import IconButton from "@mui/material/IconButton";
+import InputAdornment from "@mui/material/InputAdornment";
+import Visibility from "@mui/icons-material/Visibility";
+import VisibilityOff from "@mui/icons-material/VisibilityOff";
 
 const Login = () => {
-	const [email, setEmail] = useState("");
+	const [username, setUsername] = useState("");
 	const [password, setPassword] = useState("");
+	const [showPassword, setShowPassword] = useState(false);
 	const [loading, setLoading] = useState(false);
 	const navigate = useNavigate();
+
+	const handleClickShowPassword = () => {
+		setShowPassword(!showPassword);
+	};
+
+	const handleMouseDownPassword = (event) => {
+		event.preventDefault();
+	};
 
 	const handleSubmit = async (e) => {
 		e.preventDefault();
@@ -33,11 +44,14 @@ const Login = () => {
 		});
 
 		try {
-			const res = await api.post("/api/token/", { email, password });
+			const res = await api.post("/api/token/", { username, password });
 
 			if (res.status === 200) {
 				localStorage.setItem("ACCESS_TOKEN", res.data.access);
 				localStorage.setItem("REFRESH_TOKEN", res.data.refresh);
+
+				// Verify that the token is stored
+				console.log(`Stored Access Token: ${res.data.access}`); // Debugging line
 
 				// Fetch user details
 				const userRes = await api.get("/api/user/", {
@@ -61,16 +75,19 @@ const Login = () => {
 				swalInstance.close();
 				Swal.fire({
 					title: "Error!",
-					text: "Login failed.",
+					text: "Login failed. Please check your credentials.",
 					icon: "error",
 					confirmButtonText: "OK",
 				});
 			}
 		} catch (error) {
 			swalInstance.close();
+			// Handle detailed error messages
+			const errorMessage = error.response?.data?.detail || "An unexpected error occurred. Please try again.";
+
 			Swal.fire({
 				title: "Error!",
-				text: error.response?.data?.detail || "Login failed",
+				text: errorMessage,
 				icon: "error",
 				confirmButtonText: "OK",
 			});
@@ -100,8 +117,8 @@ const Login = () => {
 					initial={{ scale: 0 }}
 					animate={{ scale: 1 }}
 					transition={{ type: "spring", stiffness: 160, damping: 30 }}
-					className="text-gray-800 font-bold text-4xl">
-					Sign In
+					className="text-gray-800 font-bold text-2xl mt-8 -mb-">
+					Log In
 				</motion.p>
 			</div>
 			<Grid
@@ -125,17 +142,18 @@ const Login = () => {
 							initial={{ opacity: 0, y: 50 }}
 							animate={{ opacity: 1, y: 0 }}
 							transition={{ type: "spring", stiffness: 160, damping: 30 }}>
+							<p className="text-sm -mb-3 mt-4">Username:</p>
 							<TextField
-								onChange={(e) => setEmail(e.target.value)}
+								onChange={(e) => setUsername(e.target.value)}
 								variant="outlined"
 								margin="normal"
 								required
 								fullWidth
 								className="mb-4 bg-transparent"
-								name="email"
-								label="Your Email"
-								type="email"
-								id="email"
+								name="username"
+								label=""
+								type="text"
+								id="username"
 								autoComplete="off"
 							/>
 						</motion.div>
@@ -143,6 +161,7 @@ const Login = () => {
 							initial={{ opacity: 0, y: 50 }}
 							animate={{ opacity: 1, y: 0 }}
 							transition={{ type: "spring", stiffness: 160, damping: 30, delay: 0.1 }}>
+							<p className="text-sm -mb-3 mt-4">Password:</p>
 							<TextField
 								onChange={(e) => setPassword(e.target.value)}
 								variant="outlined"
@@ -151,10 +170,23 @@ const Login = () => {
 								fullWidth
 								className="mb-4 bg-transparent"
 								name="password"
-								label="Password"
-								type="password"
+								label=""
+								type={showPassword ? "text" : "password"}
 								id="password"
 								autoComplete="current-password"
+								InputProps={{
+									endAdornment: (
+										<InputAdornment position="end">
+											<IconButton
+												aria-label="toggle password visibility"
+												onClick={handleClickShowPassword}
+												onMouseDown={handleMouseDownPassword}
+												edge="end">
+												{showPassword ? <VisibilityOff /> : <Visibility />}
+											</IconButton>
+										</InputAdornment>
+									),
+								}}
 							/>
 						</motion.div>
 						<br />

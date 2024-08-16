@@ -1,7 +1,4 @@
-/* eslint-disable react-hooks/exhaustive-deps *//* eslint-disable no-unused-vars */ import { useState, useEffect } from "react";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faLock, faMailBulk } from "@fortawesome/free-solid-svg-icons";
-import { Link, useNavigate } from "react-router-dom";
+/* eslint-disable react-hooks/exhaustive-deps */ /* eslint-disable no-unused-vars */ import {	useState,	useEffect,} from "react";import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";import { faLock, faMailBulk } from "@fortawesome/free-solid-svg-icons";import { Link, useNavigate } from "react-router-dom";
 import api from "../assets/api"; // Ensure axios is correctly configured in this file
 import logo from "../assets/img/logo.png";
 import Swal from "sweetalert2";
@@ -137,14 +134,15 @@ function Register() {
 							</div>
 
 							<div>
-								<div className="relative flex items-center">
+								<p className="text-sm mb-1 mt-4">First Name:</p>
+								<div className="relative flex items-center mb-2">
 									<input
 										type="text"
 										value={firstName}
 										onChange={(e) => setFirstName(e.target.value)}
 										required
 										className="w-full text-sm text-gray-800 border border-gray-300 px-4 py-3 rounded-md outline-blue-600"
-										placeholder="First Name"
+										placeholder=""
 									/>
 									<svg
 										xmlns="http://www.w3.org/2000/svg"
@@ -164,14 +162,15 @@ function Register() {
 								</div>
 							</div>
 							<div className="mt-2">
-								<div className="relative flex items-center">
+								<p className="text-sm mb-1 mt-4">Last Name:</p>
+								<div className="relative flex items-center mb-2">
 									<input
 										type="text"
 										value={lastName}
 										onChange={(e) => setLastName(e.target.value)}
 										required
 										className="w-full text-sm text-gray-800 border border-gray-300 px-4 py-3 rounded-md outline-blue-600"
-										placeholder="Last Name"
+										placeholder=""
 									/>
 									<svg
 										xmlns="http://www.w3.org/2000/svg"
@@ -191,14 +190,15 @@ function Register() {
 								</div>
 							</div>
 							<div className="mt-2">
-								<div className="relative flex items-center">
+								<p className="text-sm mb-1 mt-4">Username:</p>
+								<div className="relative flex items-center mb-2">
 									<input
 										type="text"
 										value={username}
 										onChange={handleUsernameChange}
 										required
 										className="w-full text-sm text-gray-800 border border-gray-300 px-4 py-3 rounded-md outline-blue-600"
-										placeholder="Username"
+										placeholder=""
 									/>
 									<FontAwesomeIcon
 										icon={faMailBulk}
@@ -207,14 +207,15 @@ function Register() {
 								</div>
 							</div>
 							<div className="mt-2">
-								<div className="relative flex items-center">
+								<p className="text-sm mb-1 mt-4">Email:</p>
+								<div className="relative flex items-center mb-2">
 									<input
 										type="text"
 										value={email}
 										onChange={(e) => setEmail(e.target.value)}
 										required
 										className="w-full text-sm text-gray-800 border border-gray-300 px-4 py-3 rounded-md outline-blue-600"
-										placeholder="Email"
+										placeholder=""
 									/>
 									<FontAwesomeIcon
 										icon={faMailBulk}
@@ -223,14 +224,15 @@ function Register() {
 								</div>
 							</div>
 							<div className="mt-2">
-								<div className="relative flex items-center">
+								<p className="text-sm mb-1 mt-4">Mobile Number:</p>
+								<div className="relative flex items-center mb-2">
 									<input
 										type="text"
 										value={mobileNum}
 										onChange={(e) => setMobileNum(e.target.value)}
 										required
 										className="w-full text-sm text-gray-800 border border-gray-300 px-4 py-3 rounded-md outline-blue-600"
-										placeholder="Mobile Number"
+										placeholder=""
 									/>
 									<svg
 										xmlns="http://www.w3.org/2000/svg"
@@ -250,14 +252,15 @@ function Register() {
 								</div>
 							</div>
 							<div className="mt-2">
-								<div className="relative flex items-center">
+								<p className="text-sm mb-1 mt-4">Password:</p>
+								<div className="relative flex items-center mb-2">
 									<input
 										type="password"
 										value={password}
 										onChange={handlePasswordChange}
 										required
 										className="w-full text-sm text-gray-800 border border-gray-300 px-4 py-3 rounded-md outline-blue-600"
-										placeholder="Password"
+										placeholder=""
 									/>
 									<FontAwesomeIcon
 										icon={faLock}
@@ -266,14 +269,15 @@ function Register() {
 								</div>
 							</div>
 							<div className="mt-2">
-								<div className="relative flex items-center">
+								<p className="text-sm mb-1 mt-4">Repeat Password:</p>
+								<div className="relative flex items-center mb-2">
 									<input
 										type="password"
 										value={password2}
 										onChange={handlePassword2Change}
 										required
 										className="w-full text-sm text-gray-800 border border-gray-300 px-4 py-3 rounded-md outline-blue-600"
-										placeholder="Confirm Password"
+										placeholder=""
 									/>
 									<FontAwesomeIcon
 										icon={faLock}

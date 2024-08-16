@@ -21,7 +21,7 @@ function Chat() {
 										/>
 										<div>
 											<h4 className="text-sm font-semibold text-gray-900">Marie Zulfikar</h4>
-											<div className="text-[13px]">The video chat ended · 2hrs</div>
+											<div className="text-[13px]">Hello · 2hrs</div>
 										</div>
 									</div>
 								</button>

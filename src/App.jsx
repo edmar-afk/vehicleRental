@@ -7,10 +7,10 @@ import Home from "./routes/Home";
 import NotFound from "./components/NotFound";
 import ProtectedRoute from "./components/ProtectedRoute";
 import Navbar from "./components/Navbar";
-import Profile from './routes/Profile'
-import Messages from './routes/Messages'
-import PostRent from './routes/PostRent'
-import Rental from './routes/Rental'
+import Profile from "./routes/Profile";
+import Messages from "./routes/Messages";
+import PostRent from "./routes/PostRent";
+import Rental from "./routes/Rental";
 
 function Logout() {
 	localStorage.clear();
@@ -29,14 +29,8 @@ function App() {
 				<BrowserRouter>
 					<Routes>
 						<Route
-							path="/home"
-							element={
-								<ProtectedRoute>
-									
-									<Home />
-									<Navbar />
-								</ProtectedRoute>
-							}
+							path="/"
+							element={<Home />}
 						/>
 						<Route
 							path="/profile"
@@ -75,7 +69,7 @@ function App() {
 							}
 						/>
 						<Route
-							path="/"
+							path="/login"
 							element={<Login />}
 						/>
 						<Route
