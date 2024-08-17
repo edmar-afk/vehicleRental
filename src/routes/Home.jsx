@@ -12,7 +12,7 @@ function Home() {
 			<FilterSearch/>
 			<div className="p-2 mb-24 mt-2">
 				<PostRental />
-				<PostRental />
+				
 			</div>
 			{/* Conditionally render Navbar if userId (or id) exists */}
 			{userData?.id && <Navbar />}
