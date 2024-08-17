@@ -1,5 +1,4 @@
-import Paper from "@mui/material/Paper";
-import InputBase from "@mui/material/InputBase";
+import Paper from "@mui/material/Paper";import InputBase from "@mui/material/InputBase";
 import Divider from "@mui/material/Divider";
 import IconButton from "@mui/material/IconButton";
 import SearchIcon from "@mui/icons-material/Search";
@@ -7,9 +6,9 @@ import SearchIcon from "@mui/icons-material/Search";
 function FilterSearch() {
 	return (
 		<>
-			<div className="relative z-50 shadow-2xl">
-				<div className="fixed h-8 w-full bg-gray-300 top-0 shadow-2xl"></div>
-				<div className="p-2 fixed top-0 w-full">
+			<div className="sticky top-0 z-50 backdrop-blur-2xl">
+				<div className="w-full top-0"></div>
+				<div className="p-2 top-0 w-full">
 					<Paper
 						component="form"
 						sx={{ p: "2px 4px", display: "flex", alignItems: "center", width: "100%" }}>
@@ -31,7 +30,7 @@ function FilterSearch() {
 					</Paper>
 				</div>
 			</div>
-			<div className="mt-2 mb-2 w-full h-14 bg-gray-300"></div>
+			
 		</>
 	);
 }

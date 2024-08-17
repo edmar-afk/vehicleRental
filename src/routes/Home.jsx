@@ -9,6 +9,7 @@ function Home() {
 	return (
 		<>
 			<Greetings />
+			<FilterSearch/>
 			<div className="p-2 mb-24 mt-2">
 				<PostRental />
 				<PostRental />

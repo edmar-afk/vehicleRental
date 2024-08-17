@@ -1,4 +1,3 @@
-import { useState } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import icon from "../../assets/img/user-icon.png";
 import {
@@ -7,7 +6,6 @@ import {
 	faLocationDot,
 	faMessage,
 	faThumbsUp,
-	faUsers,
 } from "@fortawesome/free-solid-svg-icons";
 import { motion } from "framer-motion";
 import Swal from "sweetalert2"; // Import Swal
