@@ -1,5 +1,11 @@
-/* eslint-disable react-hooks/exhaustive-deps */ /* eslint-disable no-unused-vars */ import {	useState,	useEffect,} from "react";import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";import { faLock, faMailBulk } from "@fortawesome/free-solid-svg-icons";import { Link, useNavigate } from "react-router-dom";
-import api from "../assets/api"; // Ensure axios is correctly configured in this file
+/* eslint-disable react-hooks/exhaustive-deps */ /* eslint-disable no-unused-vars */ import {
+	useState,
+	useEffect,
+} from "react";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faCar, faLock, faMailBulk, faStreetView } from "@fortawesome/free-solid-svg-icons";
+import { Link, useNavigate } from "react-router-dom";
+import api from "../assets/api";
 import logo from "../assets/img/logo.png";
 import Swal from "sweetalert2";
 
@@ -65,7 +71,10 @@ function Register() {
 		formData.append("password2", password2);
 		formData.append("mobile_num", mobileNum);
 
-		// If no file is being uploaded, do not append profile_pic
+		const role = document.querySelector('input[name="role"]:checked')?.value;
+		if (role) {
+			formData.append(role, true);
+		}
 
 		try {
 			const res = await api.post("/api/register/", formData, {
@@ -79,7 +88,7 @@ function Register() {
 					icon: "success",
 					confirmButtonText: "OK",
 				}).then(() => {
-					navigate("/");
+					navigate("/login");
 				});
 			} else {
 				Swal.fire({
@@ -132,6 +141,45 @@ function Register() {
 							<div className="mb-8">
 								<h3 className="text-3xl font-extrabold text-gray-800">Register</h3>
 							</div>
+
+							<p className="text-sm">Are you a?:</p>
+							<ul className="grid w-full gap-6 grid-cols-2">
+								<li>
+									<input
+										type="radio"
+										id="role-is_staff"
+										name="role"
+										value="is_staff"
+										className="hidden peer"
+										defaultChecked
+									/>
+									<label
+										htmlFor="role-is_staff"
+										className="inline-flex items-center justify-between w-full p-5 text-gray-500 bg-white border border-gray-200 rounded-lg cursor-pointer dark:hover:text-gray-300 dark:border-gray-700 dark:peer-checked:text-blue-500 peer-checked:border-blue-600 peer-checked:text-blue-600 hover:text-gray-600 hover:bg-gray-100 dark:text-gray-400 dark:bg-gray-800 dark:hover:bg-gray-700">
+										<div className="block">
+											<div className="w-full text-xs font-semibold">Customer</div>
+										</div>
+										<FontAwesomeIcon icon={faStreetView} />
+									</label>
+								</li>
+								<li>
+									<input
+										type="radio"
+										id="role-is_superuser"
+										name="role"
+										value="is_superuser"
+										className="hidden peer"
+									/>
+									<label
+										htmlFor="role-is_superuser"
+										className="inline-flex items-center justify-between w-full p-5 text-gray-500 bg-white border border-gray-200 rounded-lg cursor-pointer dark:hover:text-gray-300 dark:border-gray-700 dark:peer-checked:text-blue-500 peer-checked:border-blue-600 peer-checked:text-blue-600 hover:text-gray-600 hover:bg-gray-100 dark:text-gray-400 dark:bg-gray-800 dark:hover:bg-gray-700">
+										<div className="block">
+											<div className="w-full text-xs font-semibold">Seller</div>
+										</div>
+										<FontAwesomeIcon icon={faCar} />
+									</label>
+								</li>
+							</ul>
 
 							<div>
 								<p className="text-sm mb-1 mt-4">First Name:</p>

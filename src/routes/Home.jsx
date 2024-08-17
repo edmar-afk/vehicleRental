@@ -1,11 +1,11 @@
-import FilterSearch from "../components/homepage/FilterSearch";import PostRental from "../components/homepage/PostRental";
+import FilterSearch from "../components/homepage/FilterSearch";
+import PostRental from "../components/homepage/PostRental";
 import Greetings from "../components/homepage/Greetings";
 import Navbar from "../components/Navbar";
 
 function Home() {
 	// Get all user data from local storage
 	const userData = JSON.parse(localStorage.getItem("userData"));
-
 	return (
 		<>
 			<Greetings />
@@ -13,8 +13,8 @@ function Home() {
 				<PostRental />
 				<PostRental />
 			</div>
-			{/* Conditionally render Navbar if userId exists */}
-			{userData?.userId && <Navbar />}
+			{/* Conditionally render Navbar if userId (or id) exists */}
+			{userData?.id && <Navbar />}
 		</>
 	);
 }
