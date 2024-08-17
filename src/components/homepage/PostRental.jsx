@@ -1,4 +1,5 @@
-import { useEffect, useState } from "react";import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { useEffect, useState } from "react";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import icon from "../../assets/img/user-icon.png";
 import {
 	faExclamationTriangle,
@@ -9,7 +10,7 @@ import {
 } from "@fortawesome/free-solid-svg-icons";
 import { motion } from "framer-motion";
 import Swal from "sweetalert2";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import api from "../../assets/api";
 
 function PostRental() {
@@ -197,7 +198,7 @@ function PostRental() {
 										className="text-xl"
 									/>
 								</motion.button>
-								<span className="text-[9px] ml-2 text-gray-600">Add to favorites {rental.id}</span>
+								<span className="text-[9px] ml-2 text-gray-600">Add to favorites</span>
 							</div>
 						</div>
 
@@ -218,13 +219,15 @@ function PostRental() {
 							<div
 								className="flex items-center justify-between"
 								onClick={handleMessageSeller}>
-								<div className="flex items-center justify-left">
+								<Link
+									to={`messages/${rental.posted_by.id}`}
+									className="flex items-center justify-left">
 									<FontAwesomeIcon
 										icon={faMessage}
 										className="text-lg"
 									/>
 									<span className="text-[9px] ml-1 text-gray-600">Message Seller</span>
-								</div>
+								</Link>
 							</div>
 						</div>
 

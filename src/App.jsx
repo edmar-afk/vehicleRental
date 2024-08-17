@@ -11,6 +11,7 @@ import Profile from "./routes/Profile";
 import Messages from "./routes/Messages";
 import PostRent from "./routes/PostRent";
 import Rental from "./routes/Rental";
+import Chat from "./routes/Chat";
 
 function Logout() {
 	localStorage.clear();
@@ -56,6 +57,15 @@ function App() {
 								<>
 									<Messages />
 									<Navbar />
+								</>
+							}
+						/>
+						<Route
+							path="/messages/:receiverId/"
+							element={
+								<>
+									<Chat />
+									
 								</>
 							}
 						/>

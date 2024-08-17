@@ -69,7 +69,7 @@ const Login = () => {
 					icon: "success",
 					confirmButtonText: "OK",
 				}).then(() => {
-					navigate("/home");
+					navigate("/");
 				});
 			} else {
 				swalInstance.close();
@@ -118,7 +118,7 @@ const Login = () => {
 					animate={{ scale: 1 }}
 					transition={{ type: "spring", stiffness: 160, damping: 30 }}
 					className="text-gray-800 font-bold text-2xl mt-8 -mb-">
-					Log In
+					Log In For owners
 				</motion.p>
 			</div>
 			<Grid
@@ -217,7 +217,7 @@ const Login = () => {
 										to="/register"
 										variant="body2"
 										className="ml-0.5 text-blue-400 font-bold">
-										Sign Up
+										Register
 									</Link>
 								</Grid>
 							</Grid>
