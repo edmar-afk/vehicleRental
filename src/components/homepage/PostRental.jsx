@@ -1,5 +1,4 @@
-import { useEffect, useState } from "react";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { useEffect, useState } from "react";import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import icon from "../../assets/img/user-icon.png";
 import {
 	faExclamationTriangle,
@@ -126,15 +125,15 @@ function PostRental() {
 	};
 
 	return (
-		<div className="rounded-md shadow-2xl w-full bg-[#f6f6f6] text-gray-800 mt-8">
+		<div className="rounded-md w-full text-gray-800 mt-8">
 			{rentals.map((rental) => (
 				<div
 					key={rental.id}
-					className="mb-8">
+					className="mb-14 bg-white shadow-2xl">
 					<div className="flex items-center justify-between p-3">
 						<div className="flex items-center space-x-2">
 							<img
-								src={icon}
+								src={rental.posted_by.profile?.profile_pic || icon} // Inline check
 								alt=""
 								className="object-cover object-center w-8 h-8 rounded-full"
 							/>
@@ -219,15 +218,25 @@ function PostRental() {
 							<div
 								className="flex items-center justify-between"
 								onClick={handleMessageSeller}>
-								<Link
-									to={`messages/${rental.posted_by.id}`}
-									className="flex items-center justify-left">
-									<FontAwesomeIcon
-										icon={faMessage}
-										className="text-lg"
-									/>
-									<span className="text-[9px] ml-1 text-gray-600">Message Seller</span>
-								</Link>
+								{userData !== null ? (
+									<Link
+										to={`messages/${rental.posted_by.id}`}
+										className="flex items-center justify-left">
+										<FontAwesomeIcon
+											icon={faMessage}
+											className="text-lg"
+										/>
+										<span className="text-[9px] ml-1 text-gray-600">Message Seller</span>
+									</Link>
+								) : (
+									<span className="flex items-center justify-left text-gray-600">
+										<FontAwesomeIcon
+											icon={faMessage}
+											className="text-lg"
+										/>
+										<span className="text-[9px] ml-1">Message Seller</span>
+									</span>
+								)}
 							</div>
 						</div>
 

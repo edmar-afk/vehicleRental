@@ -1,6 +1,4 @@
-/* eslint-disable react/no-unescaped-entities */ import { useState } from "react";
-import Button from "@mui/material/Button";
-import TextField from "@mui/material/TextField";
+/* eslint-disable react/no-unescaped-entities */ import { useState } from "react";import Button from "@mui/material/Button";import TextField from "@mui/material/TextField";
 import { Link, useNavigate } from "react-router-dom";
 import Paper from "@mui/material/Paper";
 import Grid from "@mui/material/Grid";
@@ -16,7 +14,7 @@ import VisibilityOff from "@mui/icons-material/VisibilityOff";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faExchange } from "@fortawesome/free-solid-svg-icons";
 
-const Login = () => {
+const CustomerLogin = () => {
 	const [username, setUsername] = useState("");
 	const [password, setPassword] = useState("");
 	const [showPassword, setShowPassword] = useState(false);
@@ -122,8 +120,10 @@ const Login = () => {
 					animate={{ scale: 1 }}
 					transition={{ type: "spring", stiffness: 160, damping: 30 }}
 					className="text-gray-800 font-bold text-2xl mt-8 flex flex-col">
-					Log In For Car Owners
-					<Link to={'/customerLogin'} className="text-center text-xs mt-4">
+					Log In For Customers
+					<Link
+						to={"/login"}
+						className="text-center text-xs mt-4">
 						<FontAwesomeIcon
 							icon={faExchange}
 							className="mr-1"
@@ -240,4 +240,4 @@ const Login = () => {
 	);
 };
 
-export default Login;
+export default CustomerLogin;

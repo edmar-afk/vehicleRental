@@ -10,7 +10,7 @@ import {
 import { motion } from "framer-motion";
 import api from "../../assets/api";
 import Swal from "sweetalert2";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, Link } from "react-router-dom";
 
 function Info() {
 	const [favorites, setFavorites] = useState([]);
@@ -46,80 +46,6 @@ function Info() {
 		}
 	}, []);
 
-	// const handleAddToFavorites = async (postId) => {
-	// 	if (!userData) {
-	// 		Swal.fire({
-	// 			title: "Login Required",
-	// 			text: "You must be logged in to add this to your Favorites.",
-	// 			icon: "warning",
-	// 			showCancelButton: true,
-	// 			confirmButtonColor: "#3085d6",
-	// 			cancelButtonColor: "#d33",
-	// 			confirmButtonText: "Login",
-	// 			cancelButtonText: "Continue Browsing",
-	// 		}).then((result) => {
-	// 			if (result.isConfirmed) {
-	// 				navigate("/login");
-	// 			}
-	// 		});
-	// 	} else {
-	// 		try {
-	// 			const response = await api.post(
-	// 				"/api/user/favorites/",
-	// 				{
-	// 					post: postId,
-	// 					favorite: true,
-	// 				},
-	// 				{
-	// 					headers: {
-	// 						"Content-Type": "application/json",
-	// 						Authorization: `Bearer ${userData.token}`,
-	// 					},
-	// 				}
-	// 			);
-
-	// 			console.log("Post added to favorites:", response.data);
-	// 			Swal.fire({
-	// 				title: "Added to Favorites",
-	// 				text: "The post has been added to your favorites.",
-	// 				icon: "success",
-	// 				confirmButtonColor: "#3085d6",
-	// 				confirmButtonText: "Okay",
-	// 			});
-	// 		} catch (error) {
-	// 			console.error("Error adding post to favorites:", error);
-	// 			Swal.fire({
-	// 				title: "Error",
-	// 				text: "There was an error adding the post to favorites. Please try again later.",
-	// 				icon: "error",
-	// 				confirmButtonColor: "#3085d6",
-	// 				confirmButtonText: "Okay",
-	// 			});
-	// 		}
-	// 	}
-	// };
-
-	const handleMessageSeller = () => {
-		if (!userData) {
-			Swal.fire({
-				title: "Login Required",
-				text: "You must be logged in to message this Seller.",
-				icon: "warning",
-				showCancelButton: true,
-				confirmButtonColor: "#3085d6",
-				cancelButtonColor: "#d33",
-				confirmButtonText: "Login",
-				cancelButtonText: "Continue Browsing",
-			}).then((result) => {
-				if (result.isConfirmed) {
-					navigate("/login");
-				}
-			});
-		} else {
-			console.log("Message seller");
-		}
-	};
-
 	const handleLikePost = () => {
 		if (!userData) {
 			Swal.fire({
@@ -152,13 +78,13 @@ function Info() {
 						<div className="flex items-center justify-between p-3">
 							<div className="flex items-center space-x-2">
 								<img
-									src={icon}
+									src={favorite.post.posted_by?.profile?.profile_pic || icon} // Inline check
 									alt=""
 									className="object-cover object-center w-8 h-8 rounded-full"
 								/>
 								<div className="-space-y-1">
 									<h2 className="text-sm font-semibold leading-none flex flex-row justify-start">
-										{favorite.post.posted_by.last_name}, {favorite.post.posted_by.first_name}{" "}
+										{favorite.post.posted_by?.last_name}, {favorite.post.posted_by?.first_name}{" "}
 										<span className="text-white ml-1 bg-blue-600 text-[8px] py-0.5 px-2 rounded-full pt-[3px]">
 											Owner
 										</span>
@@ -214,7 +140,7 @@ function Info() {
 											className="text-xl text-red-600"
 										/>
 									</motion.button>
-									<span className="text-[9px] ml-2 text-gray-600">Remove to favorites</span>
+									<span className="text-[9px] ml-2 text-gray-600">Remove from favorites</span>
 								</div>
 							</div>
 
@@ -232,17 +158,25 @@ function Info() {
 										<span className="text-xs pt-1">1 Likes</span>
 									</div>
 								</div>
-								<div
-									className="flex items-center justify-between"
-									onClick={handleMessageSeller}>
-									<div className="flex items-center justify-left">
+								{userData !== null ? (
+									<Link
+										to={`messages/${favorite.post.posted_by.id}/`}
+										className="flex items-center justify-left">
 										<FontAwesomeIcon
 											icon={faMessage}
 											className="text-lg"
 										/>
 										<span className="text-[9px] ml-1 text-gray-600">Message Seller</span>
-									</div>
-								</div>
+									</Link>
+								) : (
+									<span className="flex items-center justify-left text-gray-600">
+										<FontAwesomeIcon
+											icon={faMessage}
+											className="text-lg"
+										/>
+										<span className="text-[9px] ml-1">Message Seller</span>
+									</span>
+								)}
 							</div>
 
 							<div className="my-2">

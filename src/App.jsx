@@ -12,6 +12,7 @@ import Messages from "./routes/Messages";
 import PostRent from "./routes/PostRent";
 import Rental from "./routes/Rental";
 import Chat from "./routes/Chat";
+import CustomerLogin from "./routes/CustomerLogin";
 
 function Logout() {
 	localStorage.clear();
@@ -65,7 +66,14 @@ function App() {
 							element={
 								<>
 									<Chat />
-									
+								</>
+							}
+						/>
+						<Route
+							path="/rental/messages/:receiverId/"
+							element={
+								<>
+									<Chat />
 								</>
 							}
 						/>
@@ -81,6 +89,10 @@ function App() {
 						<Route
 							path="/login"
 							element={<Login />}
+						/>
+						<Route
+							path="/customerLogin"
+							element={<CustomerLogin />}
 						/>
 						<Route
 							path="/register"
