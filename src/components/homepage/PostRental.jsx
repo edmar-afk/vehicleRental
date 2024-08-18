@@ -83,7 +83,7 @@ function PostRental() {
 		if (!isLoggedIn) {
 			Swal.fire({
 				title: "Login Required",
-				text: "You must be logged in to message this Seller.",
+				text: "You must be logged in to message this Owner.",
 				icon: "warning",
 				showCancelButton: true,
 				confirmButtonColor: "#3085d6",
@@ -249,7 +249,7 @@ function PostRental() {
 											className="text-lg"
 										/>
 									</div>
-									<span className="text-xs pt-1">1 Likes</span>
+									<span className="text-xs pt-1">0 like</span>
 								</div>
 							</div>
 							{(!userData || (userData && !userData.is_superuser)) && (
@@ -264,7 +264,7 @@ function PostRental() {
 												icon={faMessage}
 												className="text-lg"
 											/>
-											<span className="text-[9px] ml-1 text-gray-600">Message Seller</span>
+											<span className="text-[9px] ml-1 text-gray-600">Message Owner</span>
 										</Link>
 									) : (
 										<span className="flex items-center justify-left text-gray-600">

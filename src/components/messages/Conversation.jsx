@@ -65,7 +65,7 @@ function Conversation() {
 							<div className="flex flex-col space-y-2 text-xs max-w-xs mx-2 order-1 items-end">
 								<div>
 									<span className="px-4 py-2 rounded-lg inline-block rounded-br-none bg-blue-600 text-white ">
-										Naa ka baligya Shabu bai?
+										Hi
 									</span>
 								</div>
 							</div>
@@ -81,7 +81,7 @@ function Conversation() {
 							<div className="flex flex-col space-y-2 text-xs max-w-xs mx-2 order-2 items-start">
 								<div>
 									<span className="px-4 py-2 rounded-lg inline-block rounded-bl-none bg-blue-200 text-gray-800">
-										Wala bai
+										Hello
 									</span>
 								</div>
 							</div>
