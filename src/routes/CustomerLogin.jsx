@@ -1,5 +1,4 @@
-/* eslint-disable react/no-unescaped-entities */ import { useState } from "react";import Button from "@mui/material/Button";import TextField from "@mui/material/TextField";
-import { Link, useNavigate } from "react-router-dom";
+/* eslint-disable react/no-unescaped-entities */ import { useState } from "react";import Button from "@mui/material/Button";import TextField from "@mui/material/TextField";import { Link, useNavigate } from "react-router-dom";
 import Paper from "@mui/material/Paper";
 import Grid from "@mui/material/Grid";
 import logo from "../assets/img/logo.png";
@@ -64,15 +63,26 @@ const CustomerLogin = () => {
 
 				localStorage.setItem("userData", JSON.stringify(userRes.data));
 
-				swalInstance.close();
-				Swal.fire({
-					title: "Success!",
-					text: "You have logged in successfully.",
-					icon: "success",
-					confirmButtonText: "OK",
-				}).then(() => {
-					navigate("/");
-				});
+				// Check if user is a superuser
+				if (userRes.data.is_superuser) {
+					swalInstance.close();
+					Swal.fire({
+						title: "Access Denied!",
+						text: "Car owners can't login here.",
+						icon: "error",
+						confirmButtonText: "OK",
+					});
+				} else {
+					swalInstance.close();
+					Swal.fire({
+						title: "Success!",
+						text: "You have logged in successfully.",
+						icon: "success",
+						confirmButtonText: "OK",
+					}).then(() => {
+						navigate("/");
+					});
+				}
 			} else {
 				swalInstance.close();
 				Swal.fire({
@@ -97,6 +107,7 @@ const CustomerLogin = () => {
 			setLoading(false);
 		}
 	};
+
 
 	return (
 		<div className="h-screen bg-white">

@@ -1,5 +1,4 @@
-import { useEffect, useState } from "react";import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";import icon from "../../assets/img/user-icon.png";import {
-	faExclamationTriangle,
+import { useEffect, useState } from "react";import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";import icon from "../../assets/img/user-icon.png";import {	faExclamationTriangle,
 	faHeart,
 	faLocationDot,
 	faMessage,
@@ -183,28 +182,30 @@ function PostRental() {
 							</div>
 						</div>
 
-						<motion.div
-							whileHover={{ scale: 1.1 }}
-							whileTap={{ scale: 1.5 }}
-							onClick={handleReportClick}>
-							{isLoggedIn ? (
-								<Link
-									to="/report" // Replace with your actual report link or action
-									className="flex items-center justify-left">
-									<FontAwesomeIcon
-										icon={faExclamationTriangle}
-										className="text-2xl"
-									/>
-								</Link>
-							) : (
-								<span className="flex items-center justify-left text-gray-600">
-									<FontAwesomeIcon
-										icon={faExclamationTriangle}
-										className="text-2xl"
-									/>
-								</span>
-							)}
-						</motion.div>
+						{userData && userData.is_superuser ? null : (
+							<motion.div
+								whileHover={{ scale: 1.1 }}
+								whileTap={{ scale: 1.5 }}
+								onClick={handleReportClick}>
+								{isLoggedIn ? (
+									<Link
+										to="/report" // Replace with your actual report link or action
+										className="flex items-center justify-left">
+										<FontAwesomeIcon
+											icon={faExclamationTriangle}
+											className="text-2xl"
+										/>
+									</Link>
+								) : (
+									<span className="flex items-center justify-left text-gray-600">
+										<FontAwesomeIcon
+											icon={faExclamationTriangle}
+											className="text-2xl"
+										/>
+									</span>
+								)}
+							</motion.div>
+						)}
 					</div>
 					<img
 						src={rental.images}
