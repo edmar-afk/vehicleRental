@@ -1,6 +1,4 @@
-import { useEffect, useState } from "react";import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import icon from "../../assets/img/user-icon.png";
-import {
+import { useEffect, useState } from "react";import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";import icon from "../../assets/img/user-icon.png";import {
 	faExclamationTriangle,
 	faHeart,
 	faLocationDot,
@@ -124,6 +122,27 @@ function PostRental() {
 		}
 	};
 
+	const handleReportClick = () => {
+		if (!isLoggedIn) {
+			Swal.fire({
+				title: "Login Required",
+				text: "You must be logged in to Report this Owner.",
+				icon: "warning",
+				showCancelButton: true,
+				confirmButtonColor: "#3085d6",
+				cancelButtonColor: "#d33",
+				confirmButtonText: "Login",
+				cancelButtonText: "Continue Browsing",
+			}).then((result) => {
+				if (result.isConfirmed) {
+					navigate("/login");
+				}
+			});
+		} else {
+			console.log("Like post");
+		}
+	};
+
 	return (
 		<div className="rounded-md w-full text-gray-800 mt-8">
 			{rentals.map((rental) => (
@@ -163,13 +182,28 @@ function PostRental() {
 								</span>
 							</div>
 						</div>
+
 						<motion.div
 							whileHover={{ scale: 1.1 }}
-							whileTap={{ scale: 1.5 }}>
-							<FontAwesomeIcon
-								icon={faExclamationTriangle}
-								className="text-2xl"
-							/>
+							whileTap={{ scale: 1.5 }}
+							onClick={handleReportClick}>
+							{isLoggedIn ? (
+								<Link
+									to="/report" // Replace with your actual report link or action
+									className="flex items-center justify-left">
+									<FontAwesomeIcon
+										icon={faExclamationTriangle}
+										className="text-2xl"
+									/>
+								</Link>
+							) : (
+								<span className="flex items-center justify-left text-gray-600">
+									<FontAwesomeIcon
+										icon={faExclamationTriangle}
+										className="text-2xl"
+									/>
+								</span>
+							)}
 						</motion.div>
 					</div>
 					<img
@@ -186,19 +220,21 @@ function PostRental() {
 								/>
 								<span className="text-[9px] ml-1 text-gray-600">{rental.location}</span>
 							</div>
-							<div className="flex items-center justify-center">
-								<motion.button
-									whileHover={{ scale: 1.1 }}
-									whileTap={{ scale: 1.5 }}
-									onClick={() => handleAddToFavorites(rental.id)} // Pass postId here
-								>
-									<FontAwesomeIcon
-										icon={faHeart}
-										className="text-xl"
-									/>
-								</motion.button>
-								<span className="text-[9px] ml-2 text-gray-600">Add to favorites</span>
-							</div>
+							{(!userData || (userData && !userData.is_superuser)) && (
+								<div className="flex items-center justify-center">
+									<motion.button
+										whileHover={{ scale: 1.1 }}
+										whileTap={{ scale: 1.5 }}
+										onClick={() => handleAddToFavorites(rental.id)} // Pass postId here
+									>
+										<FontAwesomeIcon
+											icon={faHeart}
+											className="text-xl"
+										/>
+									</motion.button>
+									<span className="text-[9px] ml-2 text-gray-600">Add to favorites</span>
+								</div>
+							)}
 						</div>
 
 						<div className="flex flex-row justify-between items-center py-3">
@@ -215,29 +251,31 @@ function PostRental() {
 									<span className="text-xs pt-1">1 Likes</span>
 								</div>
 							</div>
-							<div
-								className="flex items-center justify-between"
-								onClick={handleMessageSeller}>
-								{userData !== null ? (
-									<Link
-										to={`messages/${rental.posted_by.id}`}
-										className="flex items-center justify-left">
-										<FontAwesomeIcon
-											icon={faMessage}
-											className="text-lg"
-										/>
-										<span className="text-[9px] ml-1 text-gray-600">Message Seller</span>
-									</Link>
-								) : (
-									<span className="flex items-center justify-left text-gray-600">
-										<FontAwesomeIcon
-											icon={faMessage}
-											className="text-lg"
-										/>
-										<span className="text-[9px] ml-1">Message Seller</span>
-									</span>
-								)}
-							</div>
+							{(!userData || (userData && !userData.is_superuser)) && (
+								<div
+									className="flex items-center justify-between"
+									onClick={handleMessageSeller}>
+									{userData !== null ? (
+										<Link
+											to={`messages/${rental.posted_by.id}`}
+											className="flex items-center justify-left">
+											<FontAwesomeIcon
+												icon={faMessage}
+												className="text-lg"
+											/>
+											<span className="text-[9px] ml-1 text-gray-600">Message Seller</span>
+										</Link>
+									) : (
+										<span className="flex items-center justify-left text-gray-600">
+											<FontAwesomeIcon
+												icon={faMessage}
+												className="text-lg"
+											/>
+											<span className="text-[9px] ml-1">Message Seller</span>
+										</span>
+									)}
+								</div>
+							)}
 						</div>
 
 						<div className="my-2">
