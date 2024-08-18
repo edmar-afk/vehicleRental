@@ -1,5 +1,8 @@
 /* eslint-disable react/no-unescaped-entities */ import { motion } from "framer-motion";
 import EmojiPeopleIcon from "@mui/icons-material/EmojiPeople";
+import { Link } from "react-router-dom";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faDoorOpen } from "@fortawesome/free-solid-svg-icons";
 function Greetings() {
 	const userData = JSON.parse(localStorage.getItem("userData"));
 	const firstName = userData?.first_name || "Visitor";
@@ -32,6 +35,17 @@ function Greetings() {
 					<p className="block mb-8 font-sans text-xs antialiased font-normal leading-relaxed">
 						Let's keep our interactions positive and avoid making prank deals.
 					</p>
+					{!userData && (
+						<Link
+							to={"/login"}
+							className="bg-blue-400 py-1 px-3 rounded-xl text-sm">
+							<FontAwesomeIcon
+								icon={faDoorOpen}
+								className="mr-1"
+							/>{" "}
+							Login here
+						</Link>
+					)}
 				</div>
 			</div>
 
