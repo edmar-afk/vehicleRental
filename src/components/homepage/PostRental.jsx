@@ -1,4 +1,7 @@
-import { useEffect, useState } from "react";import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";import icon from "../../assets/img/user-icon.png";import {	faExclamationTriangle,
+import { useEffect, useState } from "react";import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import icon from "../../assets/img/user-icon.png";
+import {
+	faExclamationTriangle,
 	faHeart,
 	faLocationDot,
 	faMessage,
@@ -8,13 +11,14 @@ import { motion } from "framer-motion";
 import Swal from "sweetalert2";
 import { Link, useNavigate } from "react-router-dom";
 import api from "../../assets/api";
-
 function PostRental() {
 	const [rentals, setRentals] = useState([]); // State to hold rentals
+	const [likedRentals, setLikedRentals] = useState({});
+	const [likeCounts, setLikeCounts] = useState({}); // Store the like counts for each rental
 	const userData = JSON.parse(localStorage.getItem("userData"));
 	const isLoggedIn = userData !== null && userData !== undefined;
 	const navigate = useNavigate();
-
+	console.log(rentals);
 	// useEffect to fetch rental data on component mount
 	useEffect(() => {
 		let isMounted = true;
@@ -34,6 +38,22 @@ function PostRental() {
 			isMounted = false;
 		};
 	}, []);
+
+	useEffect(() => {
+		rentals.forEach((rental) => {
+			api
+				.get(`/api/displayLikes/${rental.id}/`)
+				.then((response) => {
+					setLikeCounts((prevCounts) => ({
+						...prevCounts,
+						[rental.id]: response.data.likes_count,
+					}));
+				})
+				.catch((error) => {
+					console.error("Error fetching like count:", error);
+				});
+		});
+	}, [rentals]); // This will run again whenever rentals change
 
 	const handleAddToFavorites = async (postId) => {
 		if (!isLoggedIn) {
@@ -100,11 +120,11 @@ function PostRental() {
 		}
 	};
 
-	const handleLikePost = () => {
+	const handleLikePost = async (rentalId) => {
 		if (!isLoggedIn) {
 			Swal.fire({
 				title: "Login Required",
-				text: "You must be logged in to Like this Post.",
+				text: "You must be logged in to Like or Unlike this Post.",
 				icon: "warning",
 				showCancelButton: true,
 				confirmButtonColor: "#3085d6",
@@ -117,7 +137,33 @@ function PostRental() {
 				}
 			});
 		} else {
-			console.log("Like post");
+			try {
+				// Call the toggle-like API
+				const response = await api.post(`/api/rental/${rentalId}/toggle-like/`);
+				const { detail } = response.data;
+
+				// After toggling, fetch the latest like count
+				api
+					.get(`/api/displayLikes/${rentalId}/`)
+					.then((response) => {
+						setLikeCounts((prevCounts) => ({
+							...prevCounts,
+							[rentalId]: response.data.likes_count,
+						}));
+					})
+					.catch((error) => {
+						console.error("Error fetching latest like count:", error);
+					});
+			} catch (error) {
+				console.error("Error toggling like:", error);
+				Swal.fire({
+					title: "Error",
+					text: "There was an error processing your like/unlike. Please try again later.",
+					icon: "error",
+					confirmButtonColor: "#3085d6",
+					confirmButtonText: "Okay",
+				});
+			}
 		}
 	};
 
@@ -147,7 +193,7 @@ function PostRental() {
 			{rentals.map((rental) => (
 				<div
 					key={rental.id}
-					className="mb-14 bg-white shadow-2xl">
+					className="mb-4 bg-white shadow-sm">
 					<div className="flex items-center justify-between p-3">
 						<div className="flex items-center space-x-2">
 							<img
@@ -240,25 +286,27 @@ function PostRental() {
 
 						<div className="flex flex-row justify-between items-center py-3">
 							<div className="flex flex-wrap ml-0.5">
-								<div className="flex space-x-2">
+								<div className="flex space-x-1">
 									<div
-										className="flex"
-										onClick={handleLikePost}>
+										className={`flex ${likedRentals[rental.id] ? "text-red-500" : ""}`} // Change icon color based on like state
+										onClick={() => handleLikePost(rental.id)}>
 										<FontAwesomeIcon
 											icon={faThumbsUp}
 											className="text-lg"
 										/>
 									</div>
-									<span className="text-xs pt-1">0 like</span>
+									<span className="text-xs pt-1">{likeCounts[rental.id] || 0}</span>
+									<button className="text-xs pt-1">{likedRentals[rental.id] ? "Unlike" : "Like"}</button>
 								</div>
 							</div>
+
 							{(!userData || (userData && !userData.is_superuser)) && (
 								<div
 									className="flex items-center justify-between"
 									onClick={handleMessageSeller}>
 									{userData !== null ? (
 										<Link
-											to={`messages/${rental.posted_by.id}`}
+											to={`/room/${rental.posted_by.id}`}
 											className="flex items-center justify-left">
 											<FontAwesomeIcon
 												icon={faMessage}
@@ -272,7 +320,7 @@ function PostRental() {
 												icon={faMessage}
 												className="text-lg"
 											/>
-											<span className="text-[9px] ml-1">Message Seller</span>
+											<span className="text-[9px] ml-1">Message Owner</span>
 										</span>
 									)}
 								</div>

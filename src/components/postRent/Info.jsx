@@ -1,7 +1,5 @@
-import { useState } from "react";import { faImage } from "@fortawesome/free-solid-svg-icons";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import Swal from "sweetalert2";
-import api from "../../assets/api";
+import { useState } from "react";import { faImage } from "@fortawesome/free-solid-svg-icons";import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";import Swal from "sweetalert2";import api from "../../assets/api";
+import postRentbg from "../../assets/svg/postRent.svg";
 function Info() {
 	const [image, setImage] = useState(null);
 	const [error, setError] = useState("");
@@ -61,17 +59,66 @@ function Info() {
 
 	return (
 		<>
-			<div className="bg-white h-screen w-full fixed -z-50"></div>
+			<div className="bg-gray-50 h-screen w-full fixed -z-50"></div>
+
 			<div className="text-gray-700 mb-44">
-				<p className="pt-14 font-bold text-2xl ml-4">Post a Rent</p>
-				<p className="ml-4 text-xs">Additional designs on capstone 2</p>
+				<div className="relative pb-20 bg-blue-900 rounded-b-xl">
+					<img
+						src={postRentbg}
+						className="absolute top-8 left-0 z-0"
+						alt=""
+					/>
+					<p className="pt-12 pb-6 font-bold text-2xl ml-4 z-10 relative text-right mr-4 text-blue-200">Post a Rent</p>
+				</div>
+
 				<div className="flex items-center justify-center">
 					<div className="mx-auto w-full max-w-[550px] pt-24">
+						<p className="mx-4 text-sm">
+							Rental owners can post their available properties here for others to browse and inquire about. Simply list
+							your property and connect with potential tenants easily!
+						</p>
+
 						<form
-							className="py-4 px-9"
+							className="py-4 px-4 mt-4"
 							onSubmit={handleSubmit}>
+							<div className="mb-5">
+								<label
+									htmlFor="address"
+									className="mb-3 block text-sm font-medium text-[#07074D]">
+									Address:
+								</label>
+
+								<input
+									type="text"
+									name="address"
+									id="address"
+									placeholder="Pob. Guipos ZDS"
+									className="w-full rounded-md border border-[#e0e0e0] bg-white py-3 px-6 text-sm font-medium text-[#6B7280] outline-none focus:border-blue-600 focus:shadow-md"
+									value={address}
+									onChange={(e) => setAddress(e.target.value)}
+								/>
+							</div>
+
+							<div className="mb-5">
+								<label
+									htmlFor="description"
+									className="mb-3 block text-sm font-medium text-[#07074D]">
+									Description
+								</label>
+								<textarea
+									name="description"
+									id="description"
+									placeholder="What's on your mind?"
+									className="w-full rounded-md border border-[#e0e0e0] bg-white py-3 px-6 text-sm font-medium text-[#6B7280] outline-none focus:border-blue-600 focus:shadow-md"
+									value={description}
+									onChange={(e) => setDescription(e.target.value)}
+								/>
+							</div>
+
 							<div className="mb-6 pt-4">
-								<label className="mb-5 block text-xl font-semibold text-[#07074D]">Upload Image:</label>
+								<label className="mb-2 block text-sm font-semibold text-[#07074D]">Upload Image:</label>
+								
+
 								<div className="mb-8">
 									<input
 										type="file"
@@ -95,7 +142,7 @@ function Info() {
 													icon={faImage}
 													className="text-6xl text-gray-500"
 												/>
-												<span className="mb-2 block text-xs mt-2 font-semibold text-gray-500">
+												<span className="mb-2 block text-sm mt-2 font-semibold text-gray-500">
 													Accepts jpg, jpeg, and png
 												</span>
 											</div>
@@ -104,41 +151,10 @@ function Info() {
 									{error && <p className="text-red-500 mt-2">{error}</p>}
 								</div>
 							</div>
-							<div className="mb-5">
-								<label
-									htmlFor="address"
-									className="mb-3 block text-base font-medium text-[#07074D]">
-									Address:
-								</label>
-								<input
-									type="text"
-									name="address"
-									id="address"
-									placeholder="Pob. Guipos ZDS"
-									className="w-full rounded-md border border-[#e0e0e0] bg-white py-3 px-6 text-base font-medium text-[#6B7280] outline-none focus:border-blue-600 focus:shadow-md"
-									value={address}
-									onChange={(e) => setAddress(e.target.value)}
-								/>
-							</div>
 
-							<div className="mb-5">
-								<label
-									htmlFor="description"
-									className="mb-3 block text-base font-medium text-[#07074D]">
-									Description
-								</label>
-								<textarea
-									name="description"
-									id="description"
-									placeholder="What's on your mind?"
-									className="w-full rounded-md border border-[#e0e0e0] bg-white py-3 px-6 text-base font-medium text-[#6B7280] outline-none focus:border-blue-600 focus:shadow-md"
-									value={description}
-									onChange={(e) => setDescription(e.target.value)}
-								/>
-							</div>
 							<div>
 								<button
-									className="hover:shadow-form w-full rounded-md bg-blue-600 py-3 px-8 text-center text-base font-semibold text-white outline-none"
+									className="hover:shadow-form w-full rounded-md bg-blue-600 py-3 px-8 text-center text-sm font-semibold text-white outline-none"
 									disabled={loading}>
 									{loading ? "Posting..." : "Post Vehicle Rent"}
 								</button>

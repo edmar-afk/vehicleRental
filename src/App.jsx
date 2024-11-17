@@ -62,21 +62,15 @@ function App() {
 							}
 						/>
 						<Route
-							path="/messages/:receiverId/"
+							path="/room/:receiverId/"
 							element={
 								<>
 									<Chat />
 								</>
 							}
 						/>
-						<Route
-							path="/rental/messages/:receiverId/"
-							element={
-								<>
-									<Chat />
-								</>
-							}
-						/>
+						
+						
 						<Route
 							path="/postRent"
 							element={

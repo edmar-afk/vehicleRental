@@ -14,6 +14,7 @@ import { useNavigate, Link } from "react-router-dom";
 
 function Info() {
 	const [favorites, setFavorites] = useState([]);
+	const [likeCounts, setLikeCounts] = useState({}); // To hold like counts for each post
 	const [userData, setUserData] = useState(null);
 	const navigate = useNavigate();
 
@@ -46,7 +47,24 @@ function Info() {
 		}
 	}, []);
 
-	const handleLikePost = () => {
+	// Fetch the like count for each post
+	useEffect(() => {
+		favorites.forEach((favorite) => {
+			api
+				.get(`/api/displayLikes/${favorite.post.id}/`)
+				.then((response) => {
+					setLikeCounts((prevCounts) => ({
+						...prevCounts,
+						[favorite.post.id]: response.data.likes_count,
+					}));
+				})
+				.catch((error) => {
+					console.error("Error fetching like count:", error);
+				});
+		});
+	}, [favorites]);
+
+	const handleLikePost = async (postId) => {
 		if (!userData) {
 			Swal.fire({
 				title: "Login Required",
@@ -63,7 +81,76 @@ function Info() {
 				}
 			});
 		} else {
-			console.log("Like post");
+			try {
+				if (likeCounts[postId] > 0) {
+					// If the post has already been liked, send DELETE request to unlike
+					await api.delete(`/api/rental/${postId}/unlike/`);
+					setLikeCounts((prevCounts) => ({
+						...prevCounts,
+						[postId]: prevCounts[postId] - 1,
+					}));
+				} else {
+					// If the post hasn't been liked, send POST request to like
+					await api.post(`/api/rental/${postId}/likes/`);
+					setLikeCounts((prevCounts) => ({
+						...prevCounts,
+						[postId]: (prevCounts[postId] || 0) + 1,
+					}));
+				}
+			} catch (error) {
+				console.error("Error liking/unliking the post:", error);
+				Swal.fire({
+					title: "Error",
+					text: "There was an error processing your like/unlike. Please try again later.",
+					icon: "error",
+					confirmButtonColor: "#3085d6",
+					confirmButtonText: "Okay",
+				});
+			}
+		}
+	};
+
+	const handleRemoveFavorite = async (postId) => {
+		if (!userData) {
+			Swal.fire({
+				title: "Login Required",
+				text: "You must be logged in to remove this from your favorites.",
+				icon: "warning",
+				showCancelButton: true,
+				confirmButtonColor: "#3085d6",
+				cancelButtonColor: "#d33",
+				confirmButtonText: "Login",
+				cancelButtonText: "Continue Browsing",
+			}).then((result) => {
+				if (result.isConfirmed) {
+					navigate("/login");
+				}
+			});
+		} else {
+			try {
+				await api.delete(`/api/favorites/remove/${postId}/`, {
+					headers: {
+						Authorization: `Bearer ${userData.token}`,
+					},
+				});
+				// Remove the favorite from the local state after successful deletion
+				setFavorites(favorites.filter((fav) => fav.post.id !== postId));
+				Swal.fire({
+					title: "Removed from Favorites",
+					text: "This rental has been removed from your favorites.",
+					icon: "success",
+					confirmButtonColor: "#3085d6",
+				});
+			} catch (error) {
+				console.error("Error removing from favorites:", error);
+				Swal.fire({
+					title: "Error",
+					text: "There was an error removing this rental from your favorites. Please try again later.",
+					icon: "error",
+					confirmButtonColor: "#3085d6",
+					confirmButtonText: "Okay",
+				});
+			}
 		}
 	};
 
@@ -131,7 +218,9 @@ function Info() {
 									/>
 									<span className="text-[9px] ml-1 text-gray-600">{favorite.post.location}</span>
 								</div>
-								<div className="flex items-center justify-center">
+								<div
+									className="flex items-center justify-center"
+									onClick={() => handleRemoveFavorite(favorite.post.id)}>
 									<motion.button
 										whileHover={{ scale: 1.1 }}
 										whileTap={{ scale: 1.5 }}>
@@ -149,18 +238,18 @@ function Info() {
 									<div className="flex space-x-2">
 										<div
 											className="flex"
-											onClick={handleLikePost}>
+											onClick={() => handleLikePost(favorite.post.id)}>
 											<FontAwesomeIcon
 												icon={faThumbsUp}
 												className="text-lg"
 											/>
 										</div>
-										<span className="text-xs pt-1">1 Likes</span>
+										<span className="text-xs pt-1">{likeCounts[favorite.post.id] || 0}</span>
 									</div>
 								</div>
 								{userData !== null ? (
 									<Link
-										to={`messages/${favorite.post.posted_by.id}/`}
+										to={`/room/${favorite.post.posted_by.id}`}
 										className="flex items-center justify-left">
 										<FontAwesomeIcon
 											icon={faMessage}

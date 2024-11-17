@@ -10,7 +10,7 @@ function Home() {
 		<>
 			<Greetings />
 			<FilterSearch/>
-			<div className="p-2 mb-24 mt-2">
+			<div className="mb-24 mt-2">
 				<PostRental />
 				
 			</div>

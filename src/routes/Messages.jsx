@@ -1,10 +1,11 @@
-import Chat from "../components/messages/Chat";
+import ChatList from "../components/chats/ChatList";
+import Greetings from "../components/homepage/Greetings";
 
 function Messages() {
 	return (
 		<>
-		
-			<Chat/>
+			<Greetings/>
+			<ChatList/>
 		</>
 	);
 }

@@ -1,5 +1,4 @@
-/* eslint-disable react/no-unescaped-entities */ import { useState } from "react";
-import Button from "@mui/material/Button";
+/* eslint-disable react/no-unescaped-entities */ import { useState } from "react";import Button from "@mui/material/Button";
 import TextField from "@mui/material/TextField";
 import { Link, useNavigate } from "react-router-dom";
 import Paper from "@mui/material/Paper";
@@ -54,9 +53,6 @@ const Login = () => {
 				localStorage.setItem("ACCESS_TOKEN", res.data.access);
 				localStorage.setItem("REFRESH_TOKEN", res.data.refresh);
 
-				// Verify that the token is stored
-				console.log(`Stored Access Token: ${res.data.access}`); // Debugging line
-
 				// Fetch user details
 				const userRes = await api.get("/api/user/", {
 					headers: {
@@ -64,17 +60,31 @@ const Login = () => {
 					},
 				});
 
-				localStorage.setItem("userData", JSON.stringify(userRes.data));
+				// Check if the user is a superuser
+				if (!userRes.data.is_superuser) {
+					swalInstance.close();
+					Swal.fire({
+						title: "Access Denied!",
+						text: "Customers can't log in here.",
+						icon: "error",
+						confirmButtonText: "OK",
+					});
+					// Optionally, clear the tokens from localStorage
+					localStorage.removeItem("ACCESS_TOKEN");
+					localStorage.removeItem("REFRESH_TOKEN");
+				} else {
+					localStorage.setItem("userData", JSON.stringify(userRes.data));
 
-				swalInstance.close();
-				Swal.fire({
-					title: "Success!",
-					text: "You have logged in successfully.",
-					icon: "success",
-					confirmButtonText: "OK",
-				}).then(() => {
-					navigate("/");
-				});
+					swalInstance.close();
+					Swal.fire({
+						title: "Success!",
+						text: "You have logged in successfully.",
+						icon: "success",
+						confirmButtonText: "OK",
+					}).then(() => {
+						navigate("/");
+					});
+				}
 			} else {
 				swalInstance.close();
 				Swal.fire({
@@ -99,6 +109,7 @@ const Login = () => {
 			setLoading(false);
 		}
 	};
+
 
 	return (
 		<div className="h-screen bg-white">
