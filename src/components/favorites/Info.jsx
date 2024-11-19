@@ -1,7 +1,7 @@
-import { useEffect, useState } from "react";import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { useEffect, useState } from "react";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import icon from "../../assets/img/user-icon.png";
 import {
-	faExclamationTriangle,
 	faHeart,
 	faLocationDot,
 	faMessage,
@@ -11,7 +11,10 @@ import { motion } from "framer-motion";
 import api from "../../assets/api";
 import Swal from "sweetalert2";
 import { useNavigate, Link } from "react-router-dom";
-
+import Zoom from "react-medium-image-zoom";
+import "react-medium-image-zoom/dist/styles.css";
+import RateCountModal from "../rates/RateCountModal";
+import RateModal from "../rates/RateModal";
 function Info() {
 	const [favorites, setFavorites] = useState([]);
 	const [likeCounts, setLikeCounts] = useState({}); // To hold like counts for each post
@@ -164,16 +167,21 @@ function Info() {
 						className="mb-8">
 						<div className="flex items-center justify-between p-3">
 							<div className="flex items-center space-x-2">
-								<img
-									src={favorite.post.posted_by?.profile?.profile_pic || icon} // Inline check
-									alt=""
-									className="object-cover object-center w-8 h-8 rounded-full"
-								/>
+								<Zoom>
+									<img
+										src={favorite.post.posted_by?.profile?.profile_pic || icon} // Inline check
+										alt=""
+										className="object-cover object-center w-8 h-8 rounded-full"
+									/>
+								</Zoom>
 								<div className="-space-y-1">
-									<h2 className="text-sm font-semibold leading-none flex flex-row justify-start">
+									<h2 className="text-sm font-semibold leading-none flex flex-row justify-start items-center">
 										{favorite.post.posted_by?.last_name}, {favorite.post.posted_by?.first_name}{" "}
 										<span className="text-white ml-1 bg-blue-600 text-[8px] py-0.5 px-2 rounded-full pt-[3px]">
-											Owner
+											<RateCountModal
+												ownerId={favorite.post.posted_by.id}
+												ownerName={favorite.post.posted_by.first_name}
+											/>
 										</span>
 									</h2>
 									<span className="inline-block text-xs leading-none text-gray-600">
@@ -198,9 +206,9 @@ function Info() {
 							<motion.div
 								whileHover={{ scale: 1.1 }}
 								whileTap={{ scale: 1.5 }}>
-								<FontAwesomeIcon
-									icon={faExclamationTriangle}
-									className="text-2xl"
+								<RateModal
+									ownerId={favorite.post.posted_by.id}
+									ownerName={favorite.post.posted_by.first_name}
 								/>
 							</motion.div>
 						</div>

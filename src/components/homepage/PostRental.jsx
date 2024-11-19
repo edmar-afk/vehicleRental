@@ -1,4 +1,5 @@
-import { useEffect, useState } from "react";import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { useEffect, useState } from "react";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import icon from "../../assets/img/user-icon.png";
 import {
 	faExclamationTriangle,
@@ -11,6 +12,11 @@ import { motion } from "framer-motion";
 import Swal from "sweetalert2";
 import { Link, useNavigate } from "react-router-dom";
 import api from "../../assets/api";
+import Zoom from "react-medium-image-zoom";
+import "react-medium-image-zoom/dist/styles.css";
+import RateModal from "../rates/RateModal";
+import RateCountModal from "../rates/RateCountModal";
+import ThumbsUpDownOutlinedIcon from "@mui/icons-material/ThumbsUpDownOutlined";
 function PostRental() {
 	const [rentals, setRentals] = useState([]); // State to hold rentals
 	const [likedRentals, setLikedRentals] = useState({});
@@ -202,10 +208,13 @@ function PostRental() {
 								className="object-cover object-center w-8 h-8 rounded-full"
 							/>
 							<div className="-space-y-1">
-								<h2 className="text-sm font-semibold leading-none flex flex-row justify-start">
+								<h2 className="text-sm font-semibold leading-none flex flex-row justify-start items-center">
 									{rental.posted_by.last_name}, {rental.posted_by.first_name}{" "}
 									<span className="text-white ml-1 bg-blue-600 text-[8px] py-0.5 px-2 rounded-full pt-[3px]">
-										Owner
+										<RateCountModal
+											ownerId={rental.posted_by.id}
+											ownerName={rental.posted_by.first_name}
+										/>
 									</span>
 								</h2>
 								<span className="inline-block text-xs leading-none text-gray-600">
@@ -234,30 +243,31 @@ function PostRental() {
 								whileTap={{ scale: 1.5 }}
 								onClick={handleReportClick}>
 								{isLoggedIn ? (
-									<Link
-										to="/report" // Replace with your actual report link or action
+									<div // Replace with your actual report link or action
 										className="flex items-center justify-left">
-										<FontAwesomeIcon
-											icon={faExclamationTriangle}
-											className="text-2xl"
+										<RateModal
+											ownerId={rental.posted_by.id}
+											ownerName={rental.posted_by.first_name}
 										/>
-									</Link>
+									</div>
 								) : (
 									<span className="flex items-center justify-left text-gray-600">
-										<FontAwesomeIcon
-											icon={faExclamationTriangle}
-											className="text-2xl"
-										/>
+										<button className="flex flex-col items-center">
+											<ThumbsUpDownOutlinedIcon />
+											<p className="text-xs">Rate</p>
+										</button>
 									</span>
 								)}
 							</motion.div>
 						)}
 					</div>
-					<img
-						src={rental.images}
-						alt="Rental"
-						className="object-cover object-center w-full h-72 bg-gray-500"
-					/>
+					<Zoom>
+						<img
+							src={rental.images}
+							alt="Rental"
+							className="object-cover object-center w-full h-72 bg-gray-500"
+						/>
+					</Zoom>
 					<div className="p-3">
 						<div className="flex items-center justify-between">
 							<div className="flex items-center justify-left">

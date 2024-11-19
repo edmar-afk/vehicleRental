@@ -1,6 +1,15 @@
-import { Link, useNavigate } from "react-router-dom";import userIcon from "../assets/img/user-icon.png";import BackgroundProfile from "../components/profile/BackgroundProfile";import ProfileDetails from "../components/profile/ProfileDetails";import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";import { faCamera, faPersonWalkingDashedLineArrowRight } from "@fortawesome/free-solid-svg-icons";import { useRef, useState, useEffect } from "react";import Swal from "sweetalert2";import api from "../assets/api";import { motion } from "framer-motion";
+import { Link, useNavigate } from "react-router-dom";import userIcon from "../assets/img/user-icon.png";
+import BackgroundProfile from "../components/profile/BackgroundProfile";
+import ProfileDetails from "../components/profile/ProfileDetails";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faCamera, faPersonWalkingDashedLineArrowRight } from "@fortawesome/free-solid-svg-icons";
+import { useRef, useState, useEffect } from "react";
+import Swal from "sweetalert2";
+import api from "../assets/api";
+import { motion } from "framer-motion";
 import PostLists from "../components/profile/PostLists";
-
+import Zoom from "react-medium-image-zoom";
+import "react-medium-image-zoom/dist/styles.css";
 function Profile() {
 	const userData = JSON.parse(localStorage.getItem("userData"));
 	const userId = userData?.id; // Adjust according to how your user data structure
@@ -9,7 +18,7 @@ function Profile() {
 	const [profile, setProfile] = useState({});
 	const [loading, setLoading] = useState(true);
 	const navigate = useNavigate();
-	
+
 	useEffect(() => {
 		const fetchProfilePicture = async () => {
 			try {
@@ -117,12 +126,14 @@ function Profile() {
 								bottom: 50,
 							}}
 							className="mt-14 bg-white rounded-full relative">
-							<img
-								src={imageUrl}
-								className="w-40 h-40 object-cover rounded-full"
-								draggable="false"
-								alt="Profile Pic"
-							/>
+							<Zoom>
+								<img
+									src={imageUrl}
+									className="w-40 h-40 object-cover rounded-full"
+									draggable="false"
+									alt="Profile Pic"
+								/>
+							</Zoom>
 							<div className="flex items-center justify-center rounded-full bg-gray-100 absolute bottom-0 -right-1 animate-pulse">
 								{/* Hidden File Input */}
 								<input
@@ -160,10 +171,12 @@ function Profile() {
 					<p>Unauthorized!</p>
 				)}
 			</div>
-			<div className="z-50 pb-44 -mt-24">
-				<p className="text-xl text-gray-800 ml-4">Your Post</p>
-				<PostLists ownerId={userId} />
-			</div>
+			{userData && userData.is_superuser && (
+				<div className="z-50 pb-44 -mt-24">
+					<p className="text-xl text-gray-800 ml-4">Your Post</p>
+					<PostLists ownerId={userId} />
+				</div>
+			)}
 		</>
 	);
 }

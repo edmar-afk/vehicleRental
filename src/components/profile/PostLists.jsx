@@ -1,9 +1,8 @@
-import { useEffect, useState } from "react";import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faLocationDot, faThumbsUp, faTrashAlt } from "@fortawesome/free-solid-svg-icons";
-import icon from "../../assets/img/user-icon.png";
+import { useEffect, useState } from "react";import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";import { faLocationDot, faThumbsUp, faTrashAlt } from "@fortawesome/free-solid-svg-icons";import icon from "../../assets/img/user-icon.png";
 import api from "../../assets/api";
 import Swal from "sweetalert2";
-
+import Zoom from "react-medium-image-zoom";
+import "react-medium-image-zoom/dist/styles.css";
 function PostLists({ ownerId }) {
 	const [rentals, setRentals] = useState([]);
 	const [isLoggedIn, setIsLoggedIn] = useState(false);
@@ -134,11 +133,13 @@ function PostLists({ ownerId }) {
 								/>{" "}
 							</button>
 						</div>
-						<img
-							src={rental.images}
-							alt="Rental"
-							className="object-cover object-center w-full h-72 bg-gray-500"
-						/>
+						<Zoom>
+							<img
+								src={rental.images}
+								alt="Rental"
+								className="object-cover object-center w-full h-72 bg-gray-500"
+							/>
+						</Zoom>
 						<div className="p-3">
 							<div className="flex items-center justify-between">
 								<div className="flex items-center justify-left">

@@ -8,7 +8,7 @@ const api = axios.create({
 api.interceptors.request.use(
 	(config) => {
 		const token = localStorage.getItem(ACCESS_TOKEN);
-		console.log(`Token: ${token}`); // Debugging line
+		console.log(`Token: ${token}`);
 		if (token) {
 			config.headers.Authorization = `Bearer ${token}`;
 		}
@@ -24,7 +24,7 @@ api.interceptors.response.use(
 		if (error.response.status === 401 && !originalRequest._retry) {
 			originalRequest._retry = true;
 
-			// Try to refresh the token
+			
 			const refreshToken = localStorage.getItem(REFRESH_TOKEN);
 			if (refreshToken) {
 				try {
@@ -33,14 +33,14 @@ api.interceptors.response.use(
 					});
 					const { access } = response.data;
 
-					// Save new access token
+					
 					localStorage.setItem(ACCESS_TOKEN, access);
 					api.defaults.headers.common["Authorization"] = `Bearer ${access}`;
 
-					// Retry the original request
+					
 					return api(originalRequest);
 				} catch (err) {
-					// Handle token refresh failure (e.g., logout user)
+					
 					localStorage.removeItem(ACCESS_TOKEN);
 					localStorage.removeItem(REFRESH_TOKEN);
 					window.location.href = "/login";

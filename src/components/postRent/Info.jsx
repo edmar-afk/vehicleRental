@@ -1,4 +1,8 @@
-import { useState } from "react";import { faImage } from "@fortawesome/free-solid-svg-icons";import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";import Swal from "sweetalert2";import api from "../../assets/api";
+import { useState } from "react";
+import { faImage } from "@fortawesome/free-solid-svg-icons";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import Swal from "sweetalert2";
+import api from "../../assets/api";
 import postRentbg from "../../assets/svg/postRent.svg";
 function Info() {
 	const [image, setImage] = useState(null);
@@ -117,7 +121,6 @@ function Info() {
 
 							<div className="mb-6 pt-4">
 								<label className="mb-2 block text-sm font-semibold text-[#07074D]">Upload Image:</label>
-								
 
 								<div className="mb-8">
 									<input
