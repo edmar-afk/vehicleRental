@@ -1,10 +1,8 @@
-/* eslint-disable react/no-unescaped-entities *//* eslint-disable react/prop-types */import Backdrop from "@mui/material/Backdrop";import Box from "@mui/material/Box";import Modal from "@mui/material/Modal";import Fade from "@mui/material/Fade";
-import Typography from "@mui/material/Typography";
-import { useState, useEffect } from "react";
+/* eslint-disable react/no-unescaped-entities */ /* eslint-disable react/prop-types */ import Backdrop from "@mui/material/Backdrop";import Box from "@mui/material/Box";import Modal from "@mui/material/Modal";import Fade from "@mui/material/Fade";import Typography from "@mui/material/Typography";import { useState, useEffect } from "react";
 import api from "../../assets/api"; // Replace with your actual API handler
 import StarIcon from "@mui/icons-material/Star";
 import rateBg from "../../assets/svg/rate.svg";
-
+import StarRateIcon from "@mui/icons-material/StarRate";
 const style = {
 	position: "absolute",
 	top: "50%",
@@ -17,7 +15,7 @@ const style = {
 	p: 4,
 };
 
-export default function RateCountModal({ ownerId, ownerName }) {
+export default function ProfileCountRate({ id, is_owner }) {
 	const [open, setOpen] = useState(false);
 	const [rating, setRating] = useState(null);
 	const [totalRatings, setTotalRatings] = useState(0);
@@ -34,49 +32,58 @@ export default function RateCountModal({ ownerId, ownerName }) {
 		if (open) {
 			const fetchRating = async () => {
 				try {
-					const response = await api.get(`/api/owner/${ownerId}/rating/`);
+					// Decide the API endpoint based on is_owner
+					const endpoint = is_owner ? `/api/owner/${id}/rating/` : `/api/customer/${id}/rating/`;
+					const response = await api.get(endpoint);
+
 					setRating(response.data.average_rating || "No rating available");
 					setTotalRatings(response.data.total_ratings || 0);
 				} catch (error) {
-					console.error("Failed to fetch owner rating:", error);
+					console.error("Failed to fetch rating:", error);
 					setRating("No rating yet");
 				}
 			};
 
 			fetchRating();
 		}
-	}, [open, ownerId]);
+	}, [open, id, is_owner]);
+
 
 	// Function to determine the button text based on the rating
-	const getButtonText = () => {
-		if (rating >= 4.0) {
-			return "Trusted";
-		} else if (rating >= 3.0) {
-			return "Reliable";
-		} else if (rating >= 1.0) {
-			return "Unreliable";
-		}
-		return "No rating available"; // In case of no rating
-	};
 
 	// Function to determine a message based on the rating
 	const getButtonMessage = () => {
-		if (rating >= 4.0) {
-			return "This owner is highly trusted! You can feel confident in renting from them.";
-		} else if (rating >= 3.0) {
-			return "This owner is reliable. You'll likely have a positive experience!";
-		} else if (rating >= 1.0) {
-			return "This owner has lower ratings, so proceed with caution.";
+		if (is_owner) {
+			// Owner's perspective
+			if (rating >= 4.0) {
+				return "You are highly trusted by your tenants! Keep up the great work.";
+			} else if (rating >= 3.0) {
+				return "Your tenants find you reliable. Keep striving for excellence!";
+			} else if (rating >= 1.0) {
+				return "Your rating is lower. Consider improving your service to build trust.";
+			}
+			return "You have not been rated by any tenants yet.";
+		} else {
+			// Customer's perspective
+			if (rating >= 4.0) {
+				return "Owners put a lot of trust in you! You're highly rated and a great tenant.";
+			} else if (rating >= 3.0) {
+				return "Owners find you reliable. You're building a good reputation as a tenant.";
+			} else if (rating >= 1.0) {
+				return "Some owners have raised concerns about your reliability. Consider addressing these issues.";
+			}
+			return "No owner has rated you yet. Start building your reputation!";
 		}
-		return "This owner has not been rated by any tenants";
 	};
+
+
 
 	return (
 		<div>
 			<button
 				onClick={handleOpen}
-				className="flex flex-col items-center">
-				<p className="text-xs">{getButtonText()}</p>
+				className="flex flex-col items-center bg-blue-600 p-2 rounded-full">
+				<StarRateIcon className="text-white" />
 			</button>
 			<Modal
 				aria-labelledby="transition-modal-title"
@@ -97,12 +104,11 @@ export default function RateCountModal({ ownerId, ownerName }) {
 								<img
 									className="rounded-t-lg"
 									src={rateBg}
-									alt={`${ownerName}'s Image`}
 								/>
 							</a>
 							<div className="px-5 pb-5">
 								<a href="#">
-									<h5 className="text-xl font-semibold tracking-tight text-gray-900">{ownerName}'s Rating Info</h5>
+									<h5 className="text-xl font-semibold tracking-tight text-gray-900">Your Rating Info</h5>
 								</a>
 								<div className="flex items-center mt-2.5 mb-5">
 									<div className="flex items-center space-x-1 rtl:space-x-reverse">Average Rating</div>

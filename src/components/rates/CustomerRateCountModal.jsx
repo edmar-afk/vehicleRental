@@ -1,4 +1,7 @@
-/* eslint-disable react/no-unescaped-entities *//* eslint-disable react/prop-types */import Backdrop from "@mui/material/Backdrop";import Box from "@mui/material/Box";import Modal from "@mui/material/Modal";import Fade from "@mui/material/Fade";
+/* eslint-disable react/no-unescaped-entities */ /* eslint-disable react/prop-types */ import Backdrop from "@mui/material/Backdrop";
+import Box from "@mui/material/Box";
+import Modal from "@mui/material/Modal";
+import Fade from "@mui/material/Fade";
 import Typography from "@mui/material/Typography";
 import { useState, useEffect } from "react";
 import api from "../../assets/api"; // Replace with your actual API handler
@@ -17,7 +20,7 @@ const style = {
 	p: 4,
 };
 
-export default function RateCountModal({ ownerId, ownerName }) {
+export default function CustomerRateCountModal({ customerId, customerName }) {
 	const [open, setOpen] = useState(false);
 	const [rating, setRating] = useState(null);
 	const [totalRatings, setTotalRatings] = useState(0);
@@ -34,7 +37,7 @@ export default function RateCountModal({ ownerId, ownerName }) {
 		if (open) {
 			const fetchRating = async () => {
 				try {
-					const response = await api.get(`/api/owner/${ownerId}/rating/`);
+					const response = await api.get(`/api/customer/${customerId}/rating/`);
 					setRating(response.data.average_rating || "No rating available");
 					setTotalRatings(response.data.total_ratings || 0);
 				} catch (error) {
@@ -45,7 +48,7 @@ export default function RateCountModal({ ownerId, ownerName }) {
 
 			fetchRating();
 		}
-	}, [open, ownerId]);
+	}, [open, customerId]);
 
 	// Function to determine the button text based on the rating
 	const getButtonText = () => {
@@ -62,20 +65,20 @@ export default function RateCountModal({ ownerId, ownerName }) {
 	// Function to determine a message based on the rating
 	const getButtonMessage = () => {
 		if (rating >= 4.0) {
-			return "This owner is highly trusted! You can feel confident in renting from them.";
+			return "This customer is highly trustworthy! You can feel confident renting to them.";
 		} else if (rating >= 3.0) {
-			return "This owner is reliable. You'll likely have a positive experience!";
+			return "This customer is reliable. You'll likely have a smooth transaction!";
 		} else if (rating >= 1.0) {
-			return "This owner has lower ratings, so proceed with caution.";
+			return "This customer has lower ratings, so proceed with caution.";
 		}
-		return "This owner has not been rated by any tenants";
+		return "This customer has not been rated by any owners.";
 	};
 
 	return (
 		<div>
 			<button
 				onClick={handleOpen}
-				className="flex flex-col items-center">
+				className="flex flex-col items-center ml-2 bg-blue-400 text-white px-2 py-1 rounded-full">
 				<p className="text-xs">{getButtonText()}</p>
 			</button>
 			<Modal
@@ -97,12 +100,12 @@ export default function RateCountModal({ ownerId, ownerName }) {
 								<img
 									className="rounded-t-lg"
 									src={rateBg}
-									alt={`${ownerName}'s Image`}
+									alt={`${customerName}'s Image`}
 								/>
 							</a>
 							<div className="px-5 pb-5">
 								<a href="#">
-									<h5 className="text-xl font-semibold tracking-tight text-gray-900">{ownerName}'s Rating Info</h5>
+									<h5 className="text-xl font-semibold tracking-tight text-gray-900">{customerName}'s Rating Info</h5>
 								</a>
 								<div className="flex items-center mt-2.5 mb-5">
 									<div className="flex items-center space-x-1 rtl:space-x-reverse">Average Rating</div>
@@ -113,7 +116,7 @@ export default function RateCountModal({ ownerId, ownerName }) {
 								<Typography
 									id="total-ratings-description"
 									sx={{ mb: 2, fontSize: 12 }}>
-									Rated by: {totalRatings} Customer(s)
+									Rated by: {totalRatings} Owner(s)
 								</Typography>
 								<div className="flex flex-col items-start justify-between">
 									<span className="text-lg font-bold text-gray-900">{getButtonMessage()}</span>

@@ -10,6 +10,7 @@ import { motion } from "framer-motion";
 import PostLists from "../components/profile/PostLists";
 import Zoom from "react-medium-image-zoom";
 import "react-medium-image-zoom/dist/styles.css";
+import ProfileCountRate from "../components/rates/ProfileCountRate";
 function Profile() {
 	const userData = JSON.parse(localStorage.getItem("userData"));
 	const userId = userData?.id; // Adjust according to how your user data structure
@@ -115,6 +116,7 @@ function Profile() {
 						</div>
 					</button>
 				</Link>
+				<div className="absolute top-2 right-2"><ProfileCountRate id={userData.id} is_owner={userData.is_superuser} /></div>
 				{userData ? (
 					<div className="flex flex-col justify-center items-center">
 						<motion.div

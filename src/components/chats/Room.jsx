@@ -1,9 +1,11 @@
-import { useEffect, useState, useRef } from "react";import { useNavigate, useParams } from "react-router-dom";
-import api from "../../assets/api";
+import { useEffect, useState, useRef } from "react";import { useNavigate, useParams } from "react-router-dom";import api from "../../assets/api";
 import Sender from "./Sender";
 import Receiver from "./Receiver";
 import ReplyAllIcon from "@mui/icons-material/ReplyAll";
 import { Person } from "@mui/icons-material"; // Import the Material-UI icon
+import RateCustomerModal from "../rates/RateCustomerModal";
+import RateCountModal from "../rates/RateCountModal";
+import CustomerRateCountModal from "../rates/CustomerRateCountModal";
 
 function Room() {
 	const navigate = useNavigate();
@@ -115,9 +117,31 @@ function Room() {
 							/>
 						)}
 						<p className="font-bold ml-1">{userData?.first_name || "Anonymous"}</p>
+
+						{senderData.is_superuser ? (
+							<>
+								<CustomerRateCountModal
+									customerId={receiverId}
+									customerName={userData?.first_name || "Anonymous"}
+								/>
+							</>
+						) : (
+							<>
+								<RateCountModal
+									ownerId={receiverId.id}
+									ownerName={receiverId.first_name}
+								/>
+							</>
+						)}
 					</div>
-					<div onClick={() => navigate(-1)}>
-						<ReplyAllIcon className="text-purple-400" />
+					<div className="flex gap-4 items-center">
+						<RateCustomerModal
+							customerId={receiverId}
+							customerName={userData?.first_name || "Anonymous"}
+						/>
+						<div onClick={() => navigate(-1)}>
+							<ReplyAllIcon className="text-purple-400" />
+						</div>
 					</div>
 				</div>
 			</div>
