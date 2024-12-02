@@ -1,10 +1,31 @@
 import { faCarSide, faHeart, faHouse, faMessage, faUserCircle } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { NavLink } from "react-router-dom";
+import { useState, useEffect } from "react";
 import logo from "../assets/img/logo.png";
+import api from "../assets/api";
+
 function Navbar() {
 	const userData = JSON.parse(localStorage.getItem("userData"));
 	const isSuperuser = userData?.is_superuser;
+	const [unreadCount, setUnreadCount] = useState(0);
+	console.log(unreadCount);
+	// Fetch unread message count
+	useEffect(() => {
+		const fetchUnreadCount = async () => {
+			if (!userData?.id) return;
+
+			try {
+				const response = await api.get(`/api/messages/unread-global/${userData.id}/`);
+				setUnreadCount(response.data.unread_count || 0);
+				console.log(response);
+			} catch (error) {
+				console.error("Failed to fetch unread messages:", error);
+			}
+		};
+
+		fetchUnreadCount();
+	}, [userData]);
 
 	return (
 		<div className="relative z-50">
@@ -36,13 +57,19 @@ function Navbar() {
 							}`
 						}>
 						{({ isActive }) => (
-							<>
+							<div className="relative flex flex-col">
 								<FontAwesomeIcon
 									icon={faMessage}
 									className={`text-xl ${isActive ? "text-blue-400" : "text-gray-700"}`}
 								/>
 								<span className={`text-[7px] ${isActive ? "text-blue-400" : "text-gray-700"}`}>Messages</span>
-							</>
+								{/* Conditionally render the unread count */}
+								{unreadCount > 0 && (
+									<span className="text-[5px] bg-blue-600 font-bold text-white fixed top-1.5 right-4 p-1 rounded-full">
+										{unreadCount}
+									</span>
+								)}
+							</div>
 						)}
 					</NavLink>
 

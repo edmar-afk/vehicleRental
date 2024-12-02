@@ -153,7 +153,7 @@ function PostLists({ ownerId }) {
 
 							<div className="flex flex-row justify-between items-center py-3">
 								<div className="flex flex-wrap ml-0.5">
-									<div className="flex space-x-2">
+									{/* <div className="flex space-x-2">
 										<div className="flex">
 											<FontAwesomeIcon
 												icon={faThumbsUp}
@@ -161,7 +161,7 @@ function PostLists({ ownerId }) {
 											/>
 										</div>
 										<span className="text-xs pt-1">1 Likes</span>
-									</div>
+									</div> */}
 								</div>
 							</div>
 

@@ -3,9 +3,11 @@ import { Link } from "react-router-dom";
 import api from "../../assets/api";
 import { Person } from "@mui/icons-material"; // Import the Material-UI icon
 
-function ChatBubble({ first_name, content, time_sent, id }) {
+function ChatBubble({ first_name, content, time_sent, id, roomId }) {
 	const [profilePic, setProfilePic] = useState("");
+	const userData = JSON.parse(localStorage.getItem("userData")); // Get logged-in user data
 
+	// Fetch profile picture
 	useEffect(() => {
 		const fetchProfilePic = async () => {
 			try {
@@ -16,14 +18,25 @@ function ChatBubble({ first_name, content, time_sent, id }) {
 				setProfilePic(null); // Set to null on error
 			}
 		};
-
 		fetchProfilePic();
 	}, [id]);
+
+	// Function to mark messages as read
+	const handleMarkMessagesAsRead = async () => {
+		try {
+			await api.post(`/api/chatrooms/${roomId}/mark-read/${userData.id}/`);
+			console.log("Messages marked as read successfully.");
+		} catch (error) {
+			console.error("Failed to mark messages as read:", error);
+		}
+	};
 
 	return (
 		<Link
 			to={`/room/${id}`}
-			className="w-full text-left py-2 focus:outline-none focus-visible:bg-indigo-50">
+			className="w-full text-left py-2 focus:outline-none focus-visible:bg-indigo-50"
+			onClick={handleMarkMessagesAsRead} // Trigger the API call on click
+		>
 			<div className="flex items-center">
 				{profilePic ? (
 					<img

@@ -13,6 +13,7 @@ import PostRent from "./routes/PostRent";
 import Rental from "./routes/Rental";
 import Chat from "./routes/Chat";
 import CustomerLogin from "./routes/CustomerLogin";
+import Comment from "./routes/Comment";
 
 function Logout() {
 	localStorage.clear();
@@ -53,6 +54,14 @@ function App() {
 							}
 						/>
 						<Route
+							path="/comment/:postId/"
+							element={
+								<>
+									<Comment />
+								</>
+							}
+						/>
+						<Route
 							path="/messages"
 							element={
 								<>
@@ -69,8 +78,7 @@ function App() {
 								</>
 							}
 						/>
-						
-						
+
 						<Route
 							path="/postRent"
 							element={

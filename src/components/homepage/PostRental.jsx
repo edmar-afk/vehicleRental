@@ -1,5 +1,4 @@
-import { useEffect, useState } from "react";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { useEffect, useState } from "react";import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import icon from "../../assets/img/user-icon.png";
 import {
 	faExclamationTriangle,
@@ -306,7 +305,7 @@ function PostRental() {
 										/>
 									</div>
 									<span className="text-xs pt-1">{likeCounts[rental.id] || 0}</span>
-									<button className="text-xs pt-1">{likedRentals[rental.id] ? "Unlike" : "Like"}</button>
+									<button className="text-xs pt-1">{likedRentals[rental.id] ? "Like" : "Like"}</button>
 								</div>
 							</div>
 
@@ -340,6 +339,8 @@ function PostRental() {
 						<div className="my-2">
 							<p className="text-gray-700 text-xs">{rental.description}</p>
 						</div>
+						<hr className="mt-6 shadow-2xl"/>
+						<Link to={`/comment/${rental.id}`} className="text-[10px] font-semibold">Comment</Link>
 					</div>
 				</div>
 			))}
